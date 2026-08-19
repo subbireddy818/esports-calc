@@ -298,7 +298,10 @@ body {
 .scoreboard-table td {
   font-family: var(--font-main);
   font-size: 2.2rem;
-  height: 60px; /* Adjusted to prevent bottom cropping */
+  height: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .scoreboard-table td[contenteditable="true"] {
