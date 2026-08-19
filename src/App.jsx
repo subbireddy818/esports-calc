@@ -503,9 +503,7 @@ function App() {
               <th>Wins</th>
               <th>Losses</th>
               <th>Kills</th>
-              <th style={{textAlign: 'center'}}>
-                <button className="btn btn-secondary" onClick={addTeam} style={{padding: '0.2rem 0.5rem'}}><Plus size={16} /></button>
-              </th>
+              <th style={{textAlign: 'center'}}>Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -533,6 +531,12 @@ function App() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
+        <button className="btn btn-secondary" onClick={addTeam} style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+          <Plus size={18} /> Add New Team
+        </button>
       </div>
 
       <div style={{marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
