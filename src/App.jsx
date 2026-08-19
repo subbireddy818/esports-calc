@@ -509,27 +509,25 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {extractedData.map((team) => (
+            {extractedData.map((team, index) => (
               <tr key={team.id}>
-                <td>
+                <td data-label="Team Name">
                   <input type="text" value={team.teamName} onChange={e => updateTeamData(team.id, 'teamName', e.target.value)} />
                 </td>
-                <td>
+                <td data-label="Matches">
                   <input type="number" value={team.matches || 0} onChange={e => updateTeamData(team.id, 'matches', Number(e.target.value))} />
                 </td>
-                <td>
-                  <input type="number" value={team.wins || 0} onChange={e => updateTeamData(team.id, 'wins', Number(e.target.value))} />
+                <td data-label="Wins">
+                  <input type="number" value={team.wins} onChange={e => updateTeamData(team.id, 'wins', Number(e.target.value))} />
                 </td>
-                <td>
-                  <input type="number" value={team.losses || 0} onChange={e => updateTeamData(team.id, 'losses', Number(e.target.value))} />
+                <td data-label="Losses">
+                  <input type="number" value={team.losses} onChange={e => updateTeamData(team.id, 'losses', Number(e.target.value))} />
                 </td>
-                <td>
-                  <input type="number" value={team.kills || 0} onChange={e => updateTeamData(team.id, 'kills', Number(e.target.value))} />
+                <td data-label="Kills">
+                  <input type="number" value={team.kills} onChange={e => updateTeamData(team.id, 'kills', Number(e.target.value))} />
                 </td>
-                <td style={{textAlign: 'center'}}>
-                  <button onClick={() => removeTeam(team.id)} style={{background:'transparent', border:'none', color:'var(--color-red-light)', cursor:'pointer'}}>
-                    <Trash2 size={20} />
-                  </button>
+                <td data-label="Remove" style={{textAlign: 'center'}}>
+                  <button className="btn btn-secondary" onClick={() => removeTeam(team.id)} style={{color: 'var(--color-red-main)', padding: '0.2rem 0.5rem', width: 'auto'}}><Trash2 size={16} /></button>
                 </td>
               </tr>
             ))}
