@@ -16,6 +16,7 @@ function App() {
 
   // Dashboard state
   const [tournaments, setTournaments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentTournamentId, setCurrentTournamentId] = useState(null);
   const [tournamentName, setTournamentName] = useState('New Tournament');
 
@@ -37,9 +38,16 @@ function App() {
 
   useEffect(() => {
     if (step === 'dashboard') {
-      setTournaments(getSavedTournaments());
+      loadTournaments();
     }
   }, [step]);
+
+  const loadTournaments = async () => {
+    setIsLoading(true);
+    const data = await getSavedTournaments();
+    setTournaments(data);
+    setIsLoading(false);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -81,20 +89,22 @@ function App() {
     setStep('edit');
   };
 
-  const removeTournament = (id) => {
-    deleteTournament(id);
-    setTournaments(getSavedTournaments());
+  const handleDeleteTournament = async (id) => {
+    if (confirm('Are you sure you want to delete this tournament?')) {
+      await deleteTournament(id);
+      loadTournaments();
+    }
   };
 
-  const saveCurrentData = () => {
-    saveTournament({
+  const saveCurrentData = async () => {
+    await saveTournament({
       id: currentTournamentId,
       name: tournamentName,
       teamsData: extractedData,
       winPointValue,
       killPointValue
     });
-    alert('Tournament saved successfully!');
+    alert('Tournament saved successfully to Cloud!');
   };
 
   const handleImageUpload = (e) => {
@@ -321,17 +331,22 @@ function App() {
     <div className="panel">
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem'}}>
         <h2>Saved Results Dashboard</h2>
-        <button className="btn btn-secondary" onClick={handleLogout} style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+        <button className="btn btn-secondary" onClick={handleLogout} style={{padding: '0.5rem 1rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
           <LogOut size={16} /> Logout
         </button>
       </div>
 
-      <button className="btn" onClick={startNewTournament} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem'}}>
-        <Plus size={20} /> Create New Tournament Result
-      </button>
+      <div style={{marginBottom: '2rem'}}>
+        <button className="btn" onClick={startNewTournament} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'center'}}>
+          <Plus size={20} /> Create New Tournament Result
+        </button>
+      </div>
 
-      <h3>Previous Tournaments</h3>
-      {tournaments.length === 0 ? (
+      <h3 style={{color: 'var(--color-gold-light)', borderBottom: '1px solid var(--color-red)', paddingBottom: '0.5rem'}}>Previous Tournaments</h3>
+      
+      {isLoading ? (
+        <p style={{textAlign: 'center', color: 'var(--color-gold)', padding: '2rem'}}>Loading from Cloud...</p>
+      ) : tournaments.length === 0 ? (
         <p style={{color: 'var(--color-text-muted)'}}>No saved tournaments found.</p>
       ) : (
         <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
@@ -345,7 +360,7 @@ function App() {
                 <button className="btn btn-secondary" onClick={() => loadTournament(t)} style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
                   <FileText size={16} /> Open
                 </button>
-                <button className="btn btn-secondary" onClick={() => removeTournament(t.id)} style={{color: 'var(--color-red-light)', borderColor: 'var(--color-red-dark)'}}>
+                <button className="btn btn-secondary" onClick={() => handleDeleteTournament(t.id)} style={{color: 'var(--color-red-light)', borderColor: 'var(--color-red-dark)'}}>
                   <Trash2 size={16} />
                 </button>
               </div>
