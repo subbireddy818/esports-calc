@@ -333,12 +333,12 @@ body {
 }
 
 /* Column Widths */
-.scoreboard-table th:nth-child(1), .scoreboard-table td:nth-child(1) { width: 8%; }
-.scoreboard-table th:nth-child(2), .scoreboard-table td:nth-child(2) { width: 30%; }
-.scoreboard-table th:nth-child(3), .scoreboard-table td:nth-child(3) { width: 10%; }
-.scoreboard-table th:nth-child(4), .scoreboard-table td:nth-child(4) { width: 10%; }
-.scoreboard-table th:nth-child(5), .scoreboard-table td:nth-child(5) { width: 10%; }
-.scoreboard-table th:nth-child(6), .scoreboard-table td:nth-child(6) { width: 11%; }
+.scoreboard-table th:nth-child(1), .scoreboard-table td:nth-child(1) { width: 7%; }
+.scoreboard-table th:nth-child(2), .scoreboard-table td:nth-child(2) { width: 38%; }
+.scoreboard-table th:nth-child(3), .scoreboard-table td:nth-child(3) { width: 8%; }
+.scoreboard-table th:nth-child(4), .scoreboard-table td:nth-child(4) { width: 8%; }
+.scoreboard-table th:nth-child(5), .scoreboard-table td:nth-child(5) { width: 8%; }
+.scoreboard-table th:nth-child(6), .scoreboard-table td:nth-child(6) { width: 10%; }
 .scoreboard-table th:nth-child(7), .scoreboard-table td:nth-child(7) { width: 10%; }
 .scoreboard-table th:nth-child(8), .scoreboard-table td:nth-child(8) { width: 11%; }
 
