@@ -677,13 +677,24 @@ function App() {
           </div>
         </div>
 
-        <div style={{width: '100%', overflowX: 'hidden', display: 'flex', justifyContent: 'center', backgroundColor: '#000', padding: '1rem 0'}}>
-          <div style={{ transform: `scale(${scale})`, transformOrigin: 'top center', marginBottom: `-${1350 * (1 - scale)}px` }}>
-            <div 
-              className="scoreboard-wrapper" 
-              ref={scoreboardRef}
-              style={{ position: 'relative' }}
-            >
+        <div style={{width: '100%', display: 'flex', justifyContent: 'center', backgroundColor: '#000', padding: '1rem 0'}}>
+          <div style={{ 
+            width: `${1080 * scale}px`, 
+            height: `${1350 * scale}px`, 
+            position: 'relative'
+          }}>
+            <div style={{ 
+              position: 'absolute', 
+              top: 0, 
+              left: 0, 
+              transform: `scale(${scale})`, 
+              transformOrigin: 'top left' 
+            }}>
+              <div 
+                className="scoreboard-wrapper" 
+                ref={scoreboardRef}
+                style={{ position: 'relative' }}
+              >
             <img 
               src={bgImage ? bgImage : bgTemplate} 
               alt="background"
@@ -787,7 +798,8 @@ function App() {
             </div>
           </div>
         </div>
-        </div>
+      </div>
+      </div>
       </div>
     );
   };
