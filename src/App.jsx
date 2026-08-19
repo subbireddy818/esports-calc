@@ -268,14 +268,24 @@ function App() {
 
   const downloadImage = async () => {
     if (scoreboardRef.current) {
+      const el = scoreboardRef.current;
+      const parent = el.parentElement;
+      const originalTransform = parent.style.transform;
+      
+      // Temporarily remove scaling so it downloads at full 1080x1350 resolution
+      parent.style.transform = 'scale(1)';
+      
       try {
-        const dataUrl = await toPng(scoreboardRef.current, { cacheBust: true, style: { background: '#000' } });
+        const dataUrl = await toPng(el, { cacheBust: true, style: { background: '#000' } });
         const link = document.createElement('a');
         link.download = 'boss-esports-standings.png';
         link.href = dataUrl;
         link.click();
       } catch (err) {
         console.error('Error generating image', err);
+      } finally {
+        // Restore scaling
+        parent.style.transform = originalTransform;
       }
     }
   };
@@ -566,12 +576,13 @@ function App() {
           </div>
         </div>
 
-        <div style={{overflowX: 'auto', width: '100%', display: 'flex', justifyContent: 'center', backgroundColor: '#000', padding: '1rem 0'}}>
-          <div 
-            className="scoreboard-wrapper" 
-            ref={scoreboardRef}
-            style={{ position: 'relative' }}
-          >
+        <div style={{width: '100%', overflowX: 'hidden', display: 'flex', justifyContent: 'center', backgroundColor: '#000', padding: '1rem 0'}}>
+          <div style={{ transform: 'scale(min(1, calc(100vw / 1150)))', transformOrigin: 'top center', marginBottom: 'calc(-1350px * (1 - min(1, calc(100vw / 1150))))' }}>
+            <div 
+              className="scoreboard-wrapper" 
+              ref={scoreboardRef}
+              style={{ position: 'relative' }}
+            >
             <img 
               src={bgImage ? bgImage : bgTemplate} 
               alt="background"
