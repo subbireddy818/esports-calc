@@ -374,8 +374,14 @@ body {
   font-family: var(--font-heading);
   font-size: 2.2rem;
   font-weight: 900;
-  color: var(--gold-main);
-  text-shadow: 0 0 10px rgba(255, 170, 0, 0.6), 0 3px 5px rgba(0,0,0,0.8);
+  color: #FFD54F;
+  -webkit-text-stroke: 1px #000;
+  text-shadow: 
+    2px 2px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
   letter-spacing: 2px;
 }
 
