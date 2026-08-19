@@ -33,6 +33,7 @@ function App() {
   const [winPointValue, setWinPointValue] = useState(DEFAULT_WIN_POINT_VALUE);
   const [killPointValue, setKillPointValue] = useState(DEFAULT_KILL_POINT_VALUE);
   const [showSettings, setShowSettings] = useState(false);
+  const [scale, setScale] = useState(1);
   
   const scoreboardRef = useRef(null);
 
@@ -41,6 +42,15 @@ function App() {
       loadTournaments();
     }
   }, [step]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScale(Math.min(1, window.innerWidth / 1150));
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const loadTournaments = async () => {
     setIsLoading(true);
@@ -442,7 +452,7 @@ function App() {
 
   const renderEditStep = () => (
     <div className="panel">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
           <button className="btn btn-secondary" onClick={() => setStep('dashboard')}><ArrowLeft size={16} /> Dashboard</button>
           <input 
@@ -579,7 +589,7 @@ function App() {
         </div>
 
         <div style={{width: '100%', overflowX: 'hidden', display: 'flex', justifyContent: 'center', backgroundColor: '#000', padding: '1rem 0'}}>
-          <div style={{ transform: 'scale(min(1, calc(100vw / 1150)))', transformOrigin: 'top center', marginBottom: 'calc(-1350px * (1 - min(1, calc(100vw / 1150))))' }}>
+          <div style={{ transform: `scale(${scale})`, transformOrigin: 'top center', marginBottom: `-${1350 * (1 - scale)}px` }}>
             <div 
               className="scoreboard-wrapper" 
               ref={scoreboardRef}
