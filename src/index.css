@@ -1,0 +1,357 @@
+:root {
+  /* Yellow / Gold */
+  --gold-dark: #EF9700;
+  --gold: #FFAA00;
+  --gold-main: #FFC107;
+  --gold-light: #FFD54F;
+
+  /* Red */
+  --red-dark: #7A0A0A;
+  --red: #B70E0E;
+  --red-main: #E53935;
+  --red-light: #FF4D4D;
+
+  /* Backgrounds */
+  --black: #0B0B0B;
+  --dark-red: #120B0B;
+  --deep-red: #1A0A0A;
+  --panel-dark: #2A0C0C;
+
+  /* Text */
+  --white: #FFFFFF;
+  --text-dark: #1A1A1A;
+  --text-muted: #aaaaaa;
+  
+  --font-main: 'Rajdhani', sans-serif;
+  --font-heading: 'Anton', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  color: var(--white);
+  font-family: var(--font-main);
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* App Container */
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-family: var(--font-heading);
+  font-size: 4.5rem;
+  margin: 0;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(229, 57, 53, 0.8);
+}
+
+.header h2 {
+  font-family: var(--font-main);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--gold-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Panels */
+.panel {
+  background: var(--panel-dark);
+  border: 1px solid rgba(255, 90, 30, 0.4);
+  padding: 2rem;
+  box-shadow: 0 0 15px rgba(255, 80, 0, 0.15);
+  clip-path: polygon(
+    8px 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+}
+
+.panel h2 {
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+  color: var(--gold-light);
+}
+
+/* UI Elements */
+.btn {
+  background: linear-gradient(180deg, var(--red), var(--red-light));
+  color: var(--white);
+  border: 1px solid var(--red-main);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  clip-path: polygon(
+    6px 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%,
+    0 6px
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 2px 5px rgba(0,0,0,0.5);
+}
+.btn:hover {
+  filter: brightness(1.1);
+}
+.btn-secondary {
+  background: linear-gradient(180deg, #333, #555);
+  border-color: #666;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.btn-secondary:hover {
+  filter: brightness(1.2);
+}
+
+.upload-area {
+  border: 2px dashed rgba(255, 90, 30, 0.5);
+  padding: 3rem;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(229, 57, 53, 0.05);
+  transition: all 0.3s;
+}
+.upload-area:hover {
+  background: rgba(229, 57, 53, 0.1);
+  border-color: var(--red-main);
+}
+.upload-area h3 {
+  font-family: var(--font-main);
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+/* Edit Table */
+.edit-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+}
+.edit-table th {
+  text-align: left;
+  font-family: var(--font-heading);
+  color: var(--gold-light);
+  font-size: 1.2rem;
+  padding: 0.5rem;
+}
+.edit-table td {
+  padding: 0.2rem;
+}
+.edit-table input {
+  width: 100%;
+  background: var(--dark-red);
+  border: 1px solid rgba(255, 90, 30, 0.3);
+  color: var(--white);
+  padding: 0.75rem;
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* =========================================
+   SCOREBOARD GENERATION
+   ========================================= */
+
+.scoreboard-wrapper {
+  width: 100%;
+  aspect-ratio: 1080 / 1350;
+  max-width: 1080px; 
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 50px;
+}
+
+.scoreboard-content {
+  width: 92%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Main Title "BOSS ESPORTS TOURNAMENT" */
+.scoreboard-main-title {
+  font-family: var(--font-heading);
+  color: #FFC107;
+  font-size: 5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0 0 15px 0;
+  letter-spacing: 2px;
+  -webkit-text-stroke: 2px #E53935; /* Red border around text */
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.4), 0 4px 4px rgba(0,0,0,0.6);
+}
+
+/* Title Box "OVERALL STANDINGS" */
+.scoreboard-title-box {
+  background: linear-gradient(90deg, #FF8A00, #FFC107, #FFD54F);
+  padding: 8px 50px;
+  border: 2px solid #FF8A00;
+  box-shadow: 0 0 20px rgba(255, 170, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+  margin-bottom: 25px;
+  clip-path: polygon(
+    15px 0,
+    100% 0,
+    100% calc(100% - 15px),
+    calc(100% - 15px) 100%,
+    0 100%,
+    0 15px
+  );
+  position: relative;
+  z-index: 2;
+}
+
+.scoreboard-title-box h3 {
+  font-family: var(--font-heading);
+  color: #1A1A1A;
+  font-size: 3.2rem;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+/* Table Container (Dark red/black gradient with red neon border) */
+.scoreboard-table-container {
+  width: 100%;
+  border: 2px solid #FF4D4D;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.8), inset 0 0 10px rgba(255, 0, 0, 0.4);
+  background: linear-gradient(180deg, #1A0A0A 0%, #0B0B0B 100%);
+  padding: 12px;
+  clip-path: polygon(
+    15px 0,
+    100% 0,
+    100% calc(100% - 15px),
+    calc(100% - 15px) 100%,
+    0 100%,
+    0 15px
+  );
+  margin-top: -20px; /* Pull it up under the title slightly */
+}
+
+.scoreboard-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px; /* Increased gap between cells */
+}
+
+/* Shared cell styling */
+.scoreboard-table th, .scoreboard-table td {
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 900;
+  vertical-align: middle;
+}
+
+/* Table Header Cells */
+.scoreboard-table th {
+  background: linear-gradient(90deg, #FF8A00 0%, #FFD54F 100%);
+  color: #1A1A1A;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  padding: 12px 5px;
+  letter-spacing: 1px;
+  border: 1px solid #FFB800;
+  box-shadow: inset 0 10px 10px rgba(255, 255, 255, 0.4), inset 0 -12px 10px rgba(255, 138, 0, 0.6);
+}
+
+/* Table Body Cells */
+.scoreboard-table td {
+  font-family: var(--font-main);
+  font-size: 2.2rem;
+  height: 60px; /* Adjusted to prevent bottom cropping */
+}
+
+/* Dark Red Cells (POS, MATCH, WIN, LOST) */
+.scoreboard-table td:nth-child(1),
+.scoreboard-table td:nth-child(3),
+.scoreboard-table td:nth-child(4),
+.scoreboard-table td:nth-child(5) {
+  background: linear-gradient(180deg, #B70E0E 0%, #7A0A0A 100%);
+  border: 1px solid #E53935;
+  box-shadow: inset 0 8px 8px rgba(229, 57, 53, 0.4), inset 0 -10px 10px rgba(122, 10, 10, 0.8);
+  color: #FFFFFF;
+}
+
+/* Gold Cells (TEAM NAME, KILLS, PTS, TOTAL) */
+.scoreboard-table td:nth-child(2),
+.scoreboard-table td:nth-child(6),
+.scoreboard-table td:nth-child(7),
+.scoreboard-table td:nth-child(8) {
+  background: linear-gradient(180deg, #FFC107 0%, #FF8A00 100%);
+  border: 1px solid #FFB700;
+  box-shadow: inset 0 10px 10px rgba(255, 255, 255, 0.4), inset 0 -10px 10px rgba(255, 138, 0, 0.6);
+  color: #1A1A1A;
+}
+
+/* TEAM NAME specific alignment */
+.scoreboard-table td:nth-child(2) {
+  text-align: left;
+  padding-left: 20px;
+}
+
+/* TOTAL column specific styling (make it pop a bit more if needed) */
+.scoreboard-table td:nth-child(8) {
+  background: linear-gradient(180deg, #FFD54F 0%, #FF9700 100%);
+}
+
+/* Column Widths */
+.scoreboard-table th:nth-child(1), .scoreboard-table td:nth-child(1) { width: 8%; }
+.scoreboard-table th:nth-child(2), .scoreboard-table td:nth-child(2) { width: 30%; }
+.scoreboard-table th:nth-child(3), .scoreboard-table td:nth-child(3) { width: 10%; }
+.scoreboard-table th:nth-child(4), .scoreboard-table td:nth-child(4) { width: 10%; }
+.scoreboard-table th:nth-child(5), .scoreboard-table td:nth-child(5) { width: 10%; }
+.scoreboard-table th:nth-child(6), .scoreboard-table td:nth-child(6) { width: 11%; }
+.scoreboard-table th:nth-child(7), .scoreboard-table td:nth-child(7) { width: 10%; }
+.scoreboard-table th:nth-child(8), .scoreboard-table td:nth-child(8) { width: 11%; }
+
+/* Empty rows */
+.scoreboard-table tr.empty-row td {
+  color: transparent !important;
+  text-shadow: none;
+}
+
+/* Watermark */
+.scoreboard-watermark {
+  margin-top: 25px;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--gold-main);
+  text-shadow: 0 0 10px rgba(255, 170, 0, 0.6), 0 3px 5px rgba(0,0,0,0.8);
+  letter-spacing: 2px;
+}
