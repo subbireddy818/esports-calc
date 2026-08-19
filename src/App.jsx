@@ -601,6 +601,12 @@ function App() {
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} 
             />
             
+            <img 
+              src="/logo.jpg" 
+              alt="logo"
+              style={{ position: 'absolute', top: '30px', right: '40px', width: 'auto', height: '120px', objectFit: 'contain', zIndex: 2, borderRadius: '8px', boxShadow: '0 4px 15px rgba(0,0,0,0.5)' }} 
+            />
+            
             <div className="scoreboard-content" style={{ position: 'relative', zIndex: 1 }}>
               <h1 className="scoreboard-main-title">BOSS ESPORTS TOURNAMENT</h1>
               <div className="scoreboard-title-box">
