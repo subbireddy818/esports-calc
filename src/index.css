@@ -298,6 +298,22 @@ body {
   height: 60px; /* Adjusted to prevent bottom cropping */
 }
 
+.scoreboard-table td[contenteditable="true"] {
+  cursor: text;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.scoreboard-table td[contenteditable="true"]:hover {
+  filter: brightness(1.1);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3) !important;
+}
+
+.scoreboard-table td[contenteditable="true"]:focus {
+  outline: 2px dashed #FFF;
+  outline-offset: -2px;
+  filter: brightness(1.2);
+}
+
 /* Dark Red Cells (POS, MATCH, WIN, LOST) */
 .scoreboard-table td:nth-child(1),
 .scoreboard-table td:nth-child(3),

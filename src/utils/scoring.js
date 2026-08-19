@@ -7,6 +7,7 @@ export const calculateStandings = (results, winPointValue, killPointValue) => {
     const totalPoints = matchPoints + killPoints;
     
     return {
+      id: result.id,
       teamName: teamName || 'UNKNOWN',
       match: matches,
       wins: wins,

@@ -259,6 +259,19 @@ function App() {
     );
   };
 
+  const handleInlineEdit = (teamId, field, value) => {
+    if (!teamId) return;
+    const parsedValue = field === 'teamName' ? value.trim() : Number(value);
+    
+    setExtractedData(prev => {
+      const newData = prev.map(team => team.id === teamId ? { ...team, [field]: parsedValue } : team);
+      // Immediately calculate standings to update the scoreboard
+      const finalStandings = calculateStandings(newData, winPointValue, killPointValue);
+      setStandings(finalStandings);
+      return newData;
+    });
+  };
+
   const addTeam = () => {
     setExtractedData(prev => [
       ...prev,
@@ -631,11 +644,31 @@ function App() {
                     {displayStandings.slice(0, 12).map((team, index) => (
                       <tr key={index} className={team.isEmpty ? 'empty-row' : ''}>
                         <td>{String(index + 1).padStart(2, '0')}</td>
-                        <td>{team.teamName || ''}</td>
-                        <td>{!team.isEmpty ? String(team.match).padStart(2, '0') : ''}</td>
-                        <td>{!team.isEmpty ? team.wins : ''}</td>
-                        <td>{!team.isEmpty ? team.losses : ''}</td>
-                        <td>{!team.isEmpty ? team.kills : ''}</td>
+                        <td 
+                          contentEditable={!team.isEmpty} 
+                          suppressContentEditableWarning={true}
+                          onBlur={(e) => handleInlineEdit(team.id, 'teamName', e.target.innerText)}
+                        >{team.teamName || ''}</td>
+                        <td 
+                          contentEditable={!team.isEmpty} 
+                          suppressContentEditableWarning={true}
+                          onBlur={(e) => handleInlineEdit(team.id, 'matches', e.target.innerText)}
+                        >{!team.isEmpty ? String(team.match).padStart(2, '0') : ''}</td>
+                        <td 
+                          contentEditable={!team.isEmpty} 
+                          suppressContentEditableWarning={true}
+                          onBlur={(e) => handleInlineEdit(team.id, 'wins', e.target.innerText)}
+                        >{!team.isEmpty ? team.wins : ''}</td>
+                        <td 
+                          contentEditable={!team.isEmpty} 
+                          suppressContentEditableWarning={true}
+                          onBlur={(e) => handleInlineEdit(team.id, 'losses', e.target.innerText)}
+                        >{!team.isEmpty ? team.losses : ''}</td>
+                        <td 
+                          contentEditable={!team.isEmpty} 
+                          suppressContentEditableWarning={true}
+                          onBlur={(e) => handleInlineEdit(team.id, 'kills', e.target.innerText)}
+                        >{!team.isEmpty ? team.kills : ''}</td>
                         <td>{!team.isEmpty ? team.matchPoints : ''}</td>
                         <td>{!team.isEmpty ? team.totalPoints : ''}</td>
                       </tr>
