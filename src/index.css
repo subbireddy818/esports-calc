@@ -207,13 +207,13 @@ body {
 .scoreboard-main-title {
   font-family: var(--font-heading);
   color: #FFC107;
-  font-size: 55px; /* Reduced for fallback font widths */
+  font-size: 42px; /* Aggressively reduced to guarantee fit */
   white-space: nowrap;
   font-weight: 900;
   text-transform: uppercase;
   margin: 0 0 15px 0;
   padding-right: 140px; /* Leave space for the logo */
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   -webkit-text-stroke: 2px #E53935; /* Red border around text */
   text-shadow: 0 0 8px rgba(255, 170, 0, 0.4), 0 4px 4px rgba(0,0,0,0.6);
 }
@@ -240,10 +240,10 @@ body {
 .scoreboard-title-box h3 {
   font-family: var(--font-heading);
   color: #1A1A1A;
-  font-size: 42px; /* Reduced for fallback font widths */
+  font-size: 32px; /* Aggressively reduced */
   white-space: nowrap;
   margin: 0;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   line-height: 1.1;
 }
