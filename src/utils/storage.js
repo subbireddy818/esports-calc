@@ -1,52 +1,68 @@
-// Local Storage Implementation
+import { supabase } from './supabase';
+
 export const getSavedTournaments = async () => {
   try {
-    const saved = localStorage.getItem('boss_tournaments');
-    return saved ? JSON.parse(saved) : [];
+    const { data, error } = await supabase
+      .from('tournaments')
+      .select('*')
+      .order('last_modified', { ascending: false });
+      
+    if (error) throw error;
+    
+    return data.map(item => ({
+      id: item.id,
+      name: item.name,
+      teamsData: item.teams_data,
+      winPointValue: Number(item.win_point_value),
+      killPointValue: Number(item.kill_point_value),
+      createdAt: item.created_at,
+      lastModified: item.last_modified
+    }));
   } catch (err) {
-    console.error('Error loading tournaments:', err);
+    console.error('Failed to load tournaments from Supabase', err);
     return [];
   }
 };
 
-export const saveTournament = async (tournament) => {
+export const saveTournament = async (tournamentData) => {
   try {
-    const tournaments = await getSavedTournaments();
-    const existingIndex = tournaments.findIndex(t => t.id === tournament.id);
-    
-    // Convert back to camelCase for the app payload
-    const tournamentToSave = {
-      id: tournament.id,
-      name: tournament.name,
-      teamsData: tournament.teamsData,
-      winPointValue: tournament.winPointValue,
-      killPointValue: tournament.killPointValue,
-      lastModified: new Date().toISOString(),
-      createdAt: tournament.id ? (tournaments[existingIndex]?.createdAt || new Date().toISOString()) : new Date().toISOString()
+    const id = tournamentData.id || Date.now().toString();
+    const payload = {
+      id,
+      name: tournamentData.name,
+      teams_data: tournamentData.teamsData,
+      win_point_value: tournamentData.winPointValue,
+      kill_point_value: tournamentData.killPointValue,
+      last_modified: new Date().toISOString()
     };
     
-    if (existingIndex >= 0) {
-      tournaments[existingIndex] = tournamentToSave;
-    } else {
-      tournaments.push(tournamentToSave);
+    if (!tournamentData.id) {
+      payload.created_at = payload.last_modified;
     }
     
-    localStorage.setItem('boss_tournaments', JSON.stringify(tournaments));
+    const { error } = await supabase
+      .from('tournaments')
+      .upsert(payload, { onConflict: 'id' });
+      
+    if (error) throw error;
     return true;
   } catch (err) {
-    console.error('Error saving tournament:', err);
+    console.error('Failed to save tournament to Supabase', err);
     return false;
   }
 };
 
 export const deleteTournament = async (id) => {
   try {
-    const tournaments = await getSavedTournaments();
-    const filtered = tournaments.filter(t => t.id !== id);
-    localStorage.setItem('boss_tournaments', JSON.stringify(filtered));
+    const { error } = await supabase
+      .from('tournaments')
+      .delete()
+      .eq('id', id);
+      
+    if (error) throw error;
     return true;
   } catch (err) {
-    console.error('Error deleting tournament:', err);
+    console.error('Failed to delete tournament from Supabase', err);
     return false;
   }
 };

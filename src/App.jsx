@@ -87,7 +87,7 @@ function App() {
     setImage(null);
     setBgImage(null);
     setIsAppendingMode(false);
-    setStep('upload');
+    setStep('edit');
   };
 
   const loadTournament = (t) => {
