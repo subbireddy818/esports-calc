@@ -678,7 +678,7 @@ function App() {
               </div>
               
               <div className="scoreboard-watermark">
-                By ᴮᴼˢˢꜱᴘᴏɪʟʀ꧂
+                By <span style={{ fontSize: '0.6em', verticalAlign: 'super', marginRight: '2px' }}>BOSS</span>SPOILER ꧂
               </div>
             </div>
           </div>
