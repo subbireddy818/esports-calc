@@ -261,6 +261,17 @@ function App() {
     });
   };
 
+  const updateTeamData = (id, field, value) => {
+    setExtractedData(prev => prev.map(team => 
+      team.id === id ? { ...team, [field]: value } : team
+    ));
+  };
+
+  const handleNumberChange = (id, field, rawValue) => {
+    const val = rawValue.replace(/[^0-9]/g, '');
+    updateTeamData(id, field, val === '' ? '' : Number(val));
+  };
+
   const addTeam = () => {
     setExtractedData(prev => [
       ...prev,
@@ -556,29 +567,29 @@ function App() {
                   </button>
                 </td>
                 <td data-label="Matches">
-                  <input type="number" value={team.matches !== undefined ? team.matches : ''} onChange={e => updateTeamData(team.id, 'matches', e.target.value === '' ? '' : Number(e.target.value))} />
+                  <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.matches !== undefined ? team.matches : ''} onChange={e => handleNumberChange(team.id, 'matches', e.target.value)} />
                 </td>
                 {tournamentMode === 'cs' ? (
                   <>
                     <td data-label="Wins">
-                      <input type="number" value={team.wins !== undefined ? team.wins : ''} onChange={e => updateTeamData(team.id, 'wins', e.target.value === '' ? '' : Number(e.target.value))} />
+                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.wins !== undefined ? team.wins : ''} onChange={e => handleNumberChange(team.id, 'wins', e.target.value)} />
                     </td>
                     <td data-label="Losses">
-                      <input type="number" value={team.losses !== undefined ? team.losses : ''} onChange={e => updateTeamData(team.id, 'losses', e.target.value === '' ? '' : Number(e.target.value))} />
+                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.losses !== undefined ? team.losses : ''} onChange={e => handleNumberChange(team.id, 'losses', e.target.value)} />
                     </td>
                   </>
                 ) : (
                   <>
                     <td data-label="Booyahs">
-                      <input type="number" value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => updateTeamData(team.id, 'booyahs', e.target.value === '' ? '' : Number(e.target.value))} />
+                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => handleNumberChange(team.id, 'booyahs', e.target.value)} />
                     </td>
                     <td data-label="Place Pts">
-                      <input type="number" value={team.placementPoints !== undefined ? team.placementPoints : ''} onChange={e => updateTeamData(team.id, 'placementPoints', e.target.value === '' ? '' : Number(e.target.value))} />
+                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.placementPoints !== undefined ? team.placementPoints : ''} onChange={e => handleNumberChange(team.id, 'placementPoints', e.target.value)} />
                     </td>
                   </>
                 )}
                 <td data-label="Kills">
-                  <input type="number" value={team.kills !== undefined ? team.kills : ''} onChange={e => updateTeamData(team.id, 'kills', e.target.value === '' ? '' : Number(e.target.value))} />
+                  <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.kills !== undefined ? team.kills : ''} onChange={e => handleNumberChange(team.id, 'kills', e.target.value)} />
                 </td>
                 <td data-label="Remove" style={{textAlign: 'center'}}>
                   <button className="btn btn-secondary" onClick={() => removeTeam(team.id)} style={{color: 'var(--color-red-main)', padding: '0.2rem 0.5rem', width: 'auto'}}><Trash2 size={16} /></button>
