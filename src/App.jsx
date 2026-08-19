@@ -601,7 +601,7 @@ function App() {
           backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', 
           justifyContent: 'center', alignItems: 'center', zIndex: 1000
         }}>
-          <div className="panel" style={{width: '90%', maxWidth: '400px'}}>
+          <div className="panel" style={{width: '90%', maxWidth: '400px', maxHeight: '90vh', overflowY: 'auto'}}>
             <h3 style={{marginTop: 0, color: 'var(--color-gold)'}}>
               Manage Players for {extractedData.find(t => t.id === editingTeamPlayersId)?.teamName}
             </h3>
