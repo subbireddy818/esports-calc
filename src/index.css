@@ -302,11 +302,10 @@ body {
   font-size: 30px; /* Reduced */
   height: 60px;
   padding: 0 10px; /* Prevents text from touching left/right edges */
-  display: flex;
-  align-items: center;
-  justify-content: center;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 
 .scoreboard-table td[contenteditable="true"] {
