@@ -221,7 +221,9 @@ body {
 /* Title Box "OVERALL STANDINGS" */
 .scoreboard-title-box {
   background: linear-gradient(90deg, #FF8A00, #FFC107, #FFD54F);
-  padding: 8px 50px;
+  padding: 8px 80px; /* Increased padding */
+  min-width: 550px; /* Force the box to be extremely wide */
+  text-align: center;
   border: 2px solid #FF8A00;
   box-shadow: 0 0 20px rgba(255, 170, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.4);
   margin-bottom: 25px;
