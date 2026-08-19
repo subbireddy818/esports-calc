@@ -266,6 +266,7 @@ body {
   width: 100%;
   border-collapse: separate;
   border-spacing: 8px; /* Increased gap between cells */
+  table-layout: fixed;
 }
 
 /* Shared cell styling */
@@ -321,6 +322,9 @@ body {
 .scoreboard-table td:nth-child(2) {
   text-align: left;
   padding-left: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* TOTAL column specific styling (make it pop a bit more if needed) */
