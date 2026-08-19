@@ -12,6 +12,7 @@ export const getSavedTournaments = async () => {
     return data.map(item => ({
       id: item.id,
       name: item.name,
+      mode: item.mode || 'cs',
       teamsData: item.teams_data,
       winPointValue: Number(item.win_point_value),
       killPointValue: Number(item.kill_point_value),
@@ -30,6 +31,7 @@ export const saveTournament = async (tournamentData) => {
     const payload = {
       id,
       name: tournamentData.name,
+      mode: tournamentData.mode || 'cs',
       teams_data: tournamentData.teamsData,
       win_point_value: tournamentData.winPointValue,
       kill_point_value: tournamentData.killPointValue,

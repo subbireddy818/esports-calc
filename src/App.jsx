@@ -19,6 +19,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTournamentId, setCurrentTournamentId] = useState(null);
   const [tournamentName, setTournamentName] = useState('New Tournament');
+  const [tournamentMode, setTournamentMode] = useState('cs');
 
   // Calculator State
   const [image, setImage] = useState(null);
@@ -80,8 +81,9 @@ function App() {
     setStep('home');
   };
 
-  const startNewTournament = () => {
+  const startNewTournament = (mode = 'cs') => {
     setCurrentTournamentId(Date.now().toString());
+    setTournamentMode(mode);
     setTournamentName('Match Day ' + new Date().toLocaleDateString());
     setExtractedData([]);
     setImage(null);
@@ -93,6 +95,7 @@ function App() {
   const loadTournament = (t) => {
     setCurrentTournamentId(t.id);
     setTournamentName(t.name);
+    setTournamentMode(t.mode || 'cs');
     setExtractedData(t.teamsData || []);
     setWinPointValue(t.winPointValue || DEFAULT_WIN_POINT_VALUE);
     setKillPointValue(t.killPointValue || DEFAULT_KILL_POINT_VALUE);
@@ -110,6 +113,7 @@ function App() {
     await saveTournament({
       id: currentTournamentId,
       name: tournamentName,
+      mode: tournamentMode,
       teamsData: extractedData,
       winPointValue,
       killPointValue
@@ -244,29 +248,13 @@ function App() {
     setIsProcessing(false);
   };
 
-  const handleManualEntry = () => {
-    if (extractedData.length === 0) {
-      setExtractedData([
-        { id: 1, teamName: 'BOSS ALPHA', matches: 0, wins: 0, losses: 0, kills: 0 }
-      ]);
-    }
-    setStep('edit');
-  };
-
-  const updateTeamData = (id, field, value) => {
-    setExtractedData(prev => 
-      prev.map(team => team.id === id ? { ...team, [field]: value } : team)
-    );
-  };
-
   const handleInlineEdit = (teamId, field, value) => {
     if (!teamId) return;
     const parsedValue = field === 'teamName' ? value.trim() : Number(value);
     
     setExtractedData(prev => {
       const newData = prev.map(team => team.id === teamId ? { ...team, [field]: parsedValue } : team);
-      // Immediately calculate standings to update the scoreboard
-      const finalStandings = calculateStandings(newData, winPointValue, killPointValue);
+      const finalStandings = calculateStandings(newData, tournamentMode, winPointValue, killPointValue);
       setStandings(finalStandings);
       return newData;
     });
@@ -275,7 +263,7 @@ function App() {
   const addTeam = () => {
     setExtractedData(prev => [
       ...prev,
-      { id: Date.now(), teamName: 'NEW TEAM', matches: 0, wins: 0, losses: 0, kills: 0 }
+      { id: Date.now(), teamName: 'NEW TEAM', matches: 0, wins: 0, losses: 0, kills: 0, booyahs: 0, placementPoints: 0 }
     ]);
   };
 
@@ -284,7 +272,7 @@ function App() {
   };
 
   const calculateResults = () => {
-    const finalStandings = calculateStandings(extractedData, winPointValue, killPointValue);
+    const finalStandings = calculateStandings(extractedData, tournamentMode, winPointValue, killPointValue);
     setStandings(finalStandings);
     setStep('result');
   };
@@ -350,8 +338,11 @@ function App() {
     <div className="panel" style={{textAlign: 'center', maxWidth: '500px', margin: '0 auto'}}>
       <h2 style={{fontSize: '2rem', marginBottom: '2rem', color: 'var(--color-gold)'}}>Welcome</h2>
       <div style={{display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
-        <button className="btn" onClick={startNewTournament} style={{padding: '1.5rem', fontSize: '1.5rem'}}>
-          Quick Start Calculator
+        <button className="btn" onClick={() => startNewTournament('cs')} style={{padding: '1.5rem', fontSize: '1.5rem'}}>
+          Quick Start (Clash Squad)
+        </button>
+        <button className="btn" onClick={() => startNewTournament('br')} style={{padding: '1.5rem', fontSize: '1.5rem'}}>
+          Quick Start (Battle Royale)
         </button>
         <button className="btn btn-secondary" onClick={() => setStep('login')}>
           Manager Login (Save & Load)
@@ -369,9 +360,12 @@ function App() {
         </button>
       </div>
 
-      <div style={{marginBottom: '2rem'}}>
-        <button className="btn" onClick={startNewTournament} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'center'}}>
-          <Plus size={20} /> Create New Tournament Result
+      <div style={{marginBottom: '2rem', display: 'flex', gap: '1rem'}}>
+        <button className="btn" onClick={() => startNewTournament('cs')} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'center'}}>
+          <Plus size={20} /> New CS Match
+        </button>
+        <button className="btn" onClick={() => startNewTournament('br')} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'center'}}>
+          <Plus size={20} /> New BR Match
         </button>
       </div>
 
@@ -523,8 +517,17 @@ function App() {
             <tr>
               <th>Team Name</th>
               <th>Matches</th>
-              <th>Wins</th>
-              <th>Losses</th>
+              {tournamentMode === 'cs' ? (
+                <>
+                  <th>Wins</th>
+                  <th>Losses</th>
+                </>
+              ) : (
+                <>
+                  <th>Booyahs</th>
+                  <th>Place Pts</th>
+                </>
+              )}
               <th>Kills</th>
               <th style={{textAlign: 'center'}}>Remove</th>
             </tr>
@@ -538,12 +541,25 @@ function App() {
                 <td data-label="Matches">
                   <input type="number" value={team.matches || 0} onChange={e => updateTeamData(team.id, 'matches', Number(e.target.value))} />
                 </td>
-                <td data-label="Wins">
-                  <input type="number" value={team.wins} onChange={e => updateTeamData(team.id, 'wins', Number(e.target.value))} />
-                </td>
-                <td data-label="Losses">
-                  <input type="number" value={team.losses} onChange={e => updateTeamData(team.id, 'losses', Number(e.target.value))} />
-                </td>
+                {tournamentMode === 'cs' ? (
+                  <>
+                    <td data-label="Wins">
+                      <input type="number" value={team.wins} onChange={e => updateTeamData(team.id, 'wins', Number(e.target.value))} />
+                    </td>
+                    <td data-label="Losses">
+                      <input type="number" value={team.losses} onChange={e => updateTeamData(team.id, 'losses', Number(e.target.value))} />
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td data-label="Booyahs">
+                      <input type="number" value={team.booyahs || 0} onChange={e => updateTeamData(team.id, 'booyahs', Number(e.target.value))} />
+                    </td>
+                    <td data-label="Place Pts">
+                      <input type="number" value={team.placementPoints || 0} onChange={e => updateTeamData(team.id, 'placementPoints', Number(e.target.value))} />
+                    </td>
+                  </>
+                )}
                 <td data-label="Kills">
                   <input type="number" value={team.kills} onChange={e => updateTeamData(team.id, 'kills', Number(e.target.value))} />
                 </td>
@@ -633,14 +649,23 @@ function App() {
                       <th>POS</th>
                       <th>TEAM NAME</th>
                       <th>MATCH</th>
-                      <th>WIN</th>
-                      <th>LOST</th>
+                      {tournamentMode === 'cs' ? (
+                        <>
+                          <th>WIN</th>
+                          <th>LOST</th>
+                        </>
+                      ) : (
+                        <>
+                          <th>BOOYAH</th>
+                          <th>PLACE PTS</th>
+                        </>
+                      )}
                       <th>KILLS</th>
-                      <th>POS</th>
+                      <th>PTS</th>
                       <th>TOTAL</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className={tournamentMode === 'br' ? 'br-mode' : ''}>
                     {displayStandings.slice(0, 12).map((team, index) => (
                       <tr key={index} className={team.isEmpty ? 'empty-row' : ''}>
                         <td>{String(index + 1).padStart(2, '0')}</td>
@@ -654,22 +679,41 @@ function App() {
                           suppressContentEditableWarning={true}
                           onBlur={(e) => handleInlineEdit(team.id, 'matches', e.target.innerText)}
                         >{!team.isEmpty ? String(team.match).padStart(2, '0') : ''}</td>
-                        <td 
-                          contentEditable={!team.isEmpty} 
-                          suppressContentEditableWarning={true}
-                          onBlur={(e) => handleInlineEdit(team.id, 'wins', e.target.innerText)}
-                        >{!team.isEmpty ? team.wins : ''}</td>
-                        <td 
-                          contentEditable={!team.isEmpty} 
-                          suppressContentEditableWarning={true}
-                          onBlur={(e) => handleInlineEdit(team.id, 'losses', e.target.innerText)}
-                        >{!team.isEmpty ? team.losses : ''}</td>
+                        
+                        {tournamentMode === 'cs' ? (
+                          <>
+                            <td 
+                              contentEditable={!team.isEmpty} 
+                              suppressContentEditableWarning={true}
+                              onBlur={(e) => handleInlineEdit(team.id, 'wins', e.target.innerText)}
+                            >{!team.isEmpty ? team.wins : ''}</td>
+                            <td 
+                              contentEditable={!team.isEmpty} 
+                              suppressContentEditableWarning={true}
+                              onBlur={(e) => handleInlineEdit(team.id, 'losses', e.target.innerText)}
+                            >{!team.isEmpty ? team.losses : ''}</td>
+                          </>
+                        ) : (
+                          <>
+                            <td 
+                              contentEditable={!team.isEmpty} 
+                              suppressContentEditableWarning={true}
+                              onBlur={(e) => handleInlineEdit(team.id, 'booyahs', e.target.innerText)}
+                            >{!team.isEmpty ? team.booyahs : ''}</td>
+                            <td 
+                              contentEditable={!team.isEmpty} 
+                              suppressContentEditableWarning={true}
+                              onBlur={(e) => handleInlineEdit(team.id, 'placementPoints', e.target.innerText)}
+                            >{!team.isEmpty ? team.placementPoints : ''}</td>
+                          </>
+                        )}
+                        
                         <td 
                           contentEditable={!team.isEmpty} 
                           suppressContentEditableWarning={true}
                           onBlur={(e) => handleInlineEdit(team.id, 'kills', e.target.innerText)}
                         >{!team.isEmpty ? team.kills : ''}</td>
-                        <td>{!team.isEmpty ? team.matchPoints : ''}</td>
+                        <td>{!team.isEmpty ? (tournamentMode === 'cs' ? team.matchPoints : team.killPoints) : ''}</td>
                         <td>{!team.isEmpty ? team.totalPoints : ''}</td>
                       </tr>
                     ))}
