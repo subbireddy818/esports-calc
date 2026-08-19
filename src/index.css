@@ -301,11 +301,12 @@ body {
   font-family: var(--font-main);
   font-size: 30px; /* Reduced */
   height: 60px;
-  line-height: 60px; /* Forces perfect vertical centering */
   padding: 0 10px; /* Prevents text from touching left/right edges */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .scoreboard-table td[contenteditable="true"] {
