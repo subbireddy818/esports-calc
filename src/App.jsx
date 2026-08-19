@@ -566,50 +566,52 @@ function App() {
           </div>
         </div>
 
-        <div 
-          className="scoreboard-wrapper" 
-          ref={scoreboardRef}
-          style={{ background: `url(${bgImage ? bgImage : bgTemplate}) center/cover no-repeat` }}
-        >
-          <div className="scoreboard-content">
-            <h1 className="scoreboard-main-title">BOSS ESPORTS TOURNAMENT</h1>
-            <div className="scoreboard-title-box">
-              <h3>OVERALL STANDINGS</h3>
-            </div>
-            
-            <div className="scoreboard-table-container">
-              <table className="scoreboard-table">
-                <thead>
-                  <tr>
-                    <th>POS</th>
-                    <th>TEAM NAME</th>
-                    <th>MATCH</th>
-                    <th>WIN</th>
-                    <th>LOST</th>
-                    <th>KILLS</th>
-                    <th>POS</th>
-                    <th>TOTAL</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {displayStandings.slice(0, 12).map((team, index) => (
-                    <tr key={index} className={team.isEmpty ? 'empty-row' : ''}>
-                      <td>{String(index + 1).padStart(2, '0')}</td>
-                      <td>{team.teamName || ''}</td>
-                      <td>{!team.isEmpty ? String(team.match).padStart(2, '0') : ''}</td>
-                      <td>{!team.isEmpty ? team.wins : ''}</td>
-                      <td>{!team.isEmpty ? team.losses : ''}</td>
-                      <td>{!team.isEmpty ? team.kills : ''}</td>
-                      <td>{!team.isEmpty ? team.matchPoints : ''}</td>
-                      <td>{!team.isEmpty ? team.totalPoints : ''}</td>
+        <div style={{overflowX: 'auto', width: '100%', display: 'flex', justifyContent: 'center', backgroundColor: '#000', padding: '1rem 0'}}>
+          <div 
+            className="scoreboard-wrapper" 
+            ref={scoreboardRef}
+            style={{ background: `url(${bgImage ? bgImage : bgTemplate}) center/cover no-repeat` }}
+          >
+            <div className="scoreboard-content">
+              <h1 className="scoreboard-main-title">BOSS ESPORTS TOURNAMENT</h1>
+              <div className="scoreboard-title-box">
+                <h3>OVERALL STANDINGS</h3>
+              </div>
+              
+              <div className="scoreboard-table-container">
+                <table className="scoreboard-table">
+                  <thead>
+                    <tr>
+                      <th>POS</th>
+                      <th>TEAM NAME</th>
+                      <th>MATCH</th>
+                      <th>WIN</th>
+                      <th>LOST</th>
+                      <th>KILLS</th>
+                      <th>POS</th>
+                      <th>TOTAL</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            
-            <div className="scoreboard-watermark">
-              By ᴮᴼˢˢꜱᴘᴏɪʟʀ꧂
+                  </thead>
+                  <tbody>
+                    {displayStandings.slice(0, 12).map((team, index) => (
+                      <tr key={index} className={team.isEmpty ? 'empty-row' : ''}>
+                        <td>{String(index + 1).padStart(2, '0')}</td>
+                        <td>{team.teamName || ''}</td>
+                        <td>{!team.isEmpty ? String(team.match).padStart(2, '0') : ''}</td>
+                        <td>{!team.isEmpty ? team.wins : ''}</td>
+                        <td>{!team.isEmpty ? team.losses : ''}</td>
+                        <td>{!team.isEmpty ? team.kills : ''}</td>
+                        <td>{!team.isEmpty ? team.matchPoints : ''}</td>
+                        <td>{!team.isEmpty ? team.totalPoints : ''}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="scoreboard-watermark">
+                By ᴮᴼˢˢꜱᴘᴏɪʟʀ꧂
+              </div>
             </div>
           </div>
         </div>
