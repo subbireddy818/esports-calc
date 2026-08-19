@@ -207,7 +207,7 @@ body {
 .scoreboard-main-title {
   font-family: var(--font-heading);
   color: #FFC107;
-  font-size: 68px; /* Hardcoded PX to fix html-to-image mobile scaling */
+  font-size: 55px; /* Reduced for fallback font widths */
   white-space: nowrap;
   font-weight: 900;
   text-transform: uppercase;
@@ -240,7 +240,7 @@ body {
 .scoreboard-title-box h3 {
   font-family: var(--font-heading);
   color: #1A1A1A;
-  font-size: 51px; /* Hardcoded PX to fix html-to-image mobile scaling */
+  font-size: 42px; /* Reduced for fallback font widths */
   white-space: nowrap;
   margin: 0;
   letter-spacing: 2px;
@@ -286,7 +286,7 @@ body {
   background: linear-gradient(90deg, #FF8A00 0%, #FFD54F 100%);
   color: #1A1A1A;
   font-family: var(--font-heading);
-  font-size: 26px; /* Hardcoded PX */
+  font-size: 22px; /* Reduced */
   padding: 12px 5px;
   letter-spacing: 0.5px;
   border: 1px solid #FFB800;
@@ -298,7 +298,7 @@ body {
 /* Table Body Cells */
 .scoreboard-table td {
   font-family: var(--font-main);
-  font-size: 35px; /* Hardcoded PX */
+  font-size: 30px; /* Reduced */
   height: 60px;
   white-space: nowrap;
   overflow: hidden;
@@ -379,10 +379,9 @@ body {
   width: 100%;
   text-align: center;
   font-family: var(--font-heading);
-  font-size: 35px; /* Hardcoded PX */
+  font-size: 30px; /* Reduced */
   font-weight: 900;
   color: #FFD54F;
-  -webkit-text-stroke: 1px #000;
   text-shadow: 
     2px 2px 0 #000,
     -1px -1px 0 #000,
