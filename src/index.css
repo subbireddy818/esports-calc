@@ -212,7 +212,6 @@ body {
   font-weight: 900;
   text-transform: uppercase;
   margin: 0 0 15px 0;
-  padding-right: 140px; /* Leave space for the logo */
   letter-spacing: 1px;
   -webkit-text-stroke: 2px #E53935; /* Red border around text */
   text-shadow: 0 0 8px rgba(255, 170, 0, 0.4), 0 4px 4px rgba(0,0,0,0.6);
