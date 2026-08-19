@@ -111,7 +111,7 @@ function App() {
   };
 
   const saveCurrentData = async () => {
-    await saveTournament({
+    const success = await saveTournament({
       id: currentTournamentId,
       name: tournamentName,
       mode: tournamentMode,
@@ -119,7 +119,11 @@ function App() {
       winPointValue,
       killPointValue
     });
-    alert('Tournament saved successfully to Cloud!');
+    if (success) {
+      alert('Tournament saved successfully to Cloud!');
+    } else {
+      alert('Error saving tournament to Cloud. Please check your connection.');
+    }
   };
 
   const handleImageUpload = (e) => {
