@@ -570,9 +570,15 @@ function App() {
           <div 
             className="scoreboard-wrapper" 
             ref={scoreboardRef}
-            style={{ background: `url(${bgImage ? bgImage : bgTemplate}) center/cover no-repeat` }}
+            style={{ position: 'relative' }}
           >
-            <div className="scoreboard-content">
+            <img 
+              src={bgImage ? bgImage : bgTemplate} 
+              alt="background"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} 
+            />
+            
+            <div className="scoreboard-content" style={{ position: 'relative', zIndex: 1 }}>
               <h1 className="scoreboard-main-title">BOSS ESPORTS TOURNAMENT</h1>
               <div className="scoreboard-title-box">
                 <h3>OVERALL STANDINGS</h3>
