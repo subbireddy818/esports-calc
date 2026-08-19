@@ -556,29 +556,29 @@ function App() {
                   </button>
                 </td>
                 <td data-label="Matches">
-                  <input type="number" value={team.matches || 0} onChange={e => updateTeamData(team.id, 'matches', Number(e.target.value))} />
+                  <input type="number" value={team.matches !== undefined ? team.matches : ''} onChange={e => updateTeamData(team.id, 'matches', e.target.value === '' ? '' : Number(e.target.value))} />
                 </td>
                 {tournamentMode === 'cs' ? (
                   <>
                     <td data-label="Wins">
-                      <input type="number" value={team.wins} onChange={e => updateTeamData(team.id, 'wins', Number(e.target.value))} />
+                      <input type="number" value={team.wins !== undefined ? team.wins : ''} onChange={e => updateTeamData(team.id, 'wins', e.target.value === '' ? '' : Number(e.target.value))} />
                     </td>
                     <td data-label="Losses">
-                      <input type="number" value={team.losses} onChange={e => updateTeamData(team.id, 'losses', Number(e.target.value))} />
+                      <input type="number" value={team.losses !== undefined ? team.losses : ''} onChange={e => updateTeamData(team.id, 'losses', e.target.value === '' ? '' : Number(e.target.value))} />
                     </td>
                   </>
                 ) : (
                   <>
                     <td data-label="Booyahs">
-                      <input type="number" value={team.booyahs || 0} onChange={e => updateTeamData(team.id, 'booyahs', Number(e.target.value))} />
+                      <input type="number" value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => updateTeamData(team.id, 'booyahs', e.target.value === '' ? '' : Number(e.target.value))} />
                     </td>
                     <td data-label="Place Pts">
-                      <input type="number" value={team.placementPoints || 0} onChange={e => updateTeamData(team.id, 'placementPoints', Number(e.target.value))} />
+                      <input type="number" value={team.placementPoints !== undefined ? team.placementPoints : ''} onChange={e => updateTeamData(team.id, 'placementPoints', e.target.value === '' ? '' : Number(e.target.value))} />
                     </td>
                   </>
                 )}
                 <td data-label="Kills">
-                  <input type="number" value={team.kills} onChange={e => updateTeamData(team.id, 'kills', Number(e.target.value))} />
+                  <input type="number" value={team.kills !== undefined ? team.kills : ''} onChange={e => updateTeamData(team.id, 'kills', e.target.value === '' ? '' : Number(e.target.value))} />
                 </td>
                 <td data-label="Remove" style={{textAlign: 'center'}}>
                   <button className="btn btn-secondary" onClick={() => removeTeam(team.id)} style={{color: 'var(--color-red-main)', padding: '0.2rem 0.5rem', width: 'auto'}}><Trash2 size={16} /></button>
