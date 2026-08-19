@@ -7,7 +7,7 @@ import { getSavedTournaments, saveTournament, deleteTournament } from './utils/s
 import './index.css';
 
 function App() {
-  const [step, setStep] = useState('home');
+  const [step, setStep] = useState(sessionStorage.getItem('boss_esports_auth') === 'admin' ? 'dashboard' : 'home');
   
   // Auth state
   const [username, setUsername] = useState('');
@@ -47,6 +47,7 @@ function App() {
     const isValidAdmin1 = username === 'admin1' && password === 'admin1';
     
     if (isValidAdmin || isValidAdmin1) {
+      sessionStorage.setItem('boss_esports_auth', 'admin');
       setStep('dashboard');
       setErrorMsg('');
     } else {
@@ -57,6 +58,7 @@ function App() {
   const handleLogout = () => {
     setUsername('');
     setPassword('');
+    sessionStorage.removeItem('boss_esports_auth');
     setStep('home');
   };
 
@@ -532,10 +534,13 @@ function App() {
 
     return (
       <div className="panel">
-        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
-          <button className="btn btn-secondary" onClick={() => setStep('edit')}>
-            <Edit size={16} style={{marginRight: '0.5rem'}}/> Edit Data
-          </button>
+        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem'}}>
+          <div style={{display: 'flex', gap: '1rem'}}>
+            <button className="btn btn-secondary" onClick={() => setStep('dashboard')}><ArrowLeft size={16} style={{marginRight: '0.5rem'}}/> Dashboard</button>
+            <button className="btn btn-secondary" onClick={() => setStep('edit')}>
+              <Edit size={16} style={{marginRight: '0.5rem'}}/> Edit Data
+            </button>
+          </div>
           <div style={{display: 'flex', gap: '1rem'}}>
             <button className="btn btn-secondary" onClick={saveCurrentData} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', borderColor: 'var(--color-gold)', color: 'var(--color-gold)'}}>
               <Save size={16} /> Save Tournament
