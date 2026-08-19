@@ -34,6 +34,7 @@ function App() {
   const [winPointValue, setWinPointValue] = useState(DEFAULT_WIN_POINT_VALUE);
   const [killPointValue, setKillPointValue] = useState(DEFAULT_KILL_POINT_VALUE);
   const [showSettings, setShowSettings] = useState(false);
+  const [editingTeamPlayersId, setEditingTeamPlayersId] = useState(null);
   const [scale, setScale] = useState(1);
   
   const scoreboardRef = useRef(null);
@@ -263,7 +264,17 @@ function App() {
   const addTeam = () => {
     setExtractedData(prev => [
       ...prev,
-      { id: Date.now(), teamName: 'NEW TEAM', matches: 0, wins: 0, losses: 0, kills: 0, booyahs: 0, placementPoints: 0 }
+      { 
+        id: Date.now(), 
+        teamName: 'NEW TEAM', 
+        matches: 0, 
+        wins: 0, 
+        losses: 0, 
+        kills: 0, 
+        booyahs: 0, 
+        placementPoints: 0,
+        players: ['', '', '', '', '']
+      }
     ]);
   };
 
@@ -516,6 +527,7 @@ function App() {
           <thead>
             <tr>
               <th>Team Name</th>
+              <th>Players</th>
               <th>Matches</th>
               {tournamentMode === 'cs' ? (
                 <>
@@ -537,6 +549,11 @@ function App() {
               <tr key={team.id}>
                 <td data-label="Team Name">
                   <input type="text" value={team.teamName} onChange={e => updateTeamData(team.id, 'teamName', e.target.value)} />
+                </td>
+                <td data-label="Players">
+                  <button className="btn btn-secondary" onClick={() => setEditingTeamPlayersId(team.id)} style={{padding: '0.5rem', fontSize: '0.9rem', width: '100%'}}>
+                    Manage
+                  </button>
                 </td>
                 <td data-label="Matches">
                   <input type="number" value={team.matches || 0} onChange={e => updateTeamData(team.id, 'matches', Number(e.target.value))} />
@@ -577,6 +594,49 @@ function App() {
           <Plus size={18} /> Add New Team
         </button>
       </div>
+
+      {editingTeamPlayersId && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', 
+          justifyContent: 'center', alignItems: 'center', zIndex: 1000
+        }}>
+          <div className="panel" style={{width: '90%', maxWidth: '400px'}}>
+            <h3 style={{marginTop: 0, color: 'var(--color-gold)'}}>
+              Manage Players for {extractedData.find(t => t.id === editingTeamPlayersId)?.teamName}
+            </h3>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem'}}>
+              {[0, 1, 2, 3, 4].map(playerIndex => (
+                <div key={playerIndex}>
+                  <label style={{display: 'block', marginBottom: '0.2rem', fontSize: '0.9rem', color: 'var(--color-gold-light)'}}>
+                    Player {playerIndex + 1} {playerIndex === 4 ? '(Optional)' : ''}
+                  </label>
+                  <input 
+                    type="text" 
+                    value={extractedData.find(t => t.id === editingTeamPlayersId)?.players?.[playerIndex] || ''} 
+                    onChange={(e) => {
+                      const newPlayers = [...(extractedData.find(t => t.id === editingTeamPlayersId)?.players || ['', '', '', '', ''])];
+                      newPlayers[playerIndex] = e.target.value;
+                      updateTeamData(editingTeamPlayersId, 'players', newPlayers);
+                    }}
+                    style={{
+                      width: '100%', padding: '0.75rem', 
+                      background: 'var(--color-dark-red)', 
+                      border: '1px solid rgba(255, 90, 30, 0.3)', 
+                      color: 'var(--color-white)', 
+                      fontFamily: 'var(--font-main)'
+                    }}
+                    placeholder={`Enter Player ${playerIndex + 1} Name`}
+                  />
+                </div>
+              ))}
+            </div>
+            <button className="btn" style={{marginTop: '1.5rem', width: '100%'}} onClick={() => setEditingTeamPlayersId(null)}>
+              Done
+            </button>
+          </div>
+        </div>
+      )}
 
       <div style={{marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
         {/* OCR HIDDEN FOR NOW
