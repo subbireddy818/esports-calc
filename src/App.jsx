@@ -276,6 +276,42 @@ function App() {
     updateTeamData(id, field, val === '' ? '' : Number(val));
   };
 
+  const handleKeyDown = (e, rowIndex, colIndex) => {
+    let nextRow = rowIndex;
+    let nextCol = colIndex;
+    
+    if (e.key === 'ArrowUp') {
+      nextRow = Math.max(0, rowIndex - 1);
+    } else if (e.key === 'ArrowDown') {
+      nextRow = Math.min(extractedData.length - 1, rowIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      if (e.target.selectionStart === 0) {
+        nextCol = Math.max(0, colIndex - 1);
+      } else return;
+    } else if (e.key === 'ArrowRight') {
+      if (e.target.selectionEnd === e.target.value.length) {
+        nextCol = Math.min(4, colIndex + 1);
+      } else return;
+    } else {
+      return;
+    }
+    
+    if (nextRow !== rowIndex || nextCol !== colIndex) {
+      e.preventDefault();
+      const nextInput = document.getElementById(`input-${nextRow}-${nextCol}`);
+      if (nextInput) {
+        nextInput.focus();
+        setTimeout(() => {
+          if (e.key === 'ArrowLeft') {
+             nextInput.setSelectionRange(nextInput.value.length, nextInput.value.length);
+          } else if (e.key === 'ArrowRight') {
+             nextInput.setSelectionRange(0, 0);
+          }
+        }, 0);
+      }
+    }
+  };
+
   const addTeam = () => {
     setExtractedData(prev => [
       ...prev,
@@ -563,7 +599,7 @@ function App() {
             {extractedData.map((team, index) => (
               <tr key={team.id}>
                 <td data-label="Team Name">
-                  <input type="text" value={team.teamName} onChange={e => updateTeamData(team.id, 'teamName', e.target.value)} />
+                  <input id={`input-${index}-0`} type="text" value={team.teamName} onChange={e => updateTeamData(team.id, 'teamName', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 0)} />
                 </td>
                 <td data-label="Players">
                   <button className="btn btn-secondary" onClick={() => setEditingTeamPlayersId(team.id)} style={{padding: '0.5rem', fontSize: '0.9rem', width: '100%'}}>
@@ -571,29 +607,29 @@ function App() {
                   </button>
                 </td>
                 <td data-label="Matches">
-                  <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.matches !== undefined ? team.matches : ''} onChange={e => handleNumberChange(team.id, 'matches', e.target.value)} />
+                  <input id={`input-${index}-1`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.matches !== undefined ? team.matches : ''} onChange={e => handleNumberChange(team.id, 'matches', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 1)} />
                 </td>
                 {tournamentMode === 'cs' ? (
                   <>
                     <td data-label="Wins">
-                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.wins !== undefined ? team.wins : ''} onChange={e => handleNumberChange(team.id, 'wins', e.target.value)} />
+                      <input id={`input-${index}-2`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.wins !== undefined ? team.wins : ''} onChange={e => handleNumberChange(team.id, 'wins', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 2)} />
                     </td>
                     <td data-label="Losses">
-                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.losses !== undefined ? team.losses : ''} onChange={e => handleNumberChange(team.id, 'losses', e.target.value)} />
+                      <input id={`input-${index}-3`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.losses !== undefined ? team.losses : ''} onChange={e => handleNumberChange(team.id, 'losses', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 3)} />
                     </td>
                   </>
                 ) : (
                   <>
                     <td data-label="Booyahs">
-                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => handleNumberChange(team.id, 'booyahs', e.target.value)} />
+                      <input id={`input-${index}-2`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => handleNumberChange(team.id, 'booyahs', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 2)} />
                     </td>
                     <td data-label="Place Pts">
-                      <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.placementPoints !== undefined ? team.placementPoints : ''} onChange={e => handleNumberChange(team.id, 'placementPoints', e.target.value)} />
+                      <input id={`input-${index}-3`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.placementPoints !== undefined ? team.placementPoints : ''} onChange={e => handleNumberChange(team.id, 'placementPoints', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 3)} />
                     </td>
                   </>
                 )}
                 <td data-label="Kills">
-                  <input type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.kills !== undefined ? team.kills : ''} onChange={e => handleNumberChange(team.id, 'kills', e.target.value)} />
+                  <input id={`input-${index}-4`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.kills !== undefined ? team.kills : ''} onChange={e => handleNumberChange(team.id, 'kills', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 4)} />
                 </td>
                 <td data-label="Remove" style={{textAlign: 'center'}}>
                   <button className="btn btn-secondary" onClick={() => removeTeam(team.id)} style={{color: 'var(--color-red-main)', padding: '0.2rem 0.5rem', width: 'auto'}}><Trash2 size={16} /></button>
