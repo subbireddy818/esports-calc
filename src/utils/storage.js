@@ -8,17 +8,28 @@ export const getSavedTournaments = async () => {
       .order('last_modified', { ascending: false });
       
     if (error) throw error;
-    
-    return data.map(item => ({
-      id: item.id,
-      name: item.name,
-      mode: item.mode || 'cs',
-      teamsData: item.teams_data,
-      winPointValue: Number(item.win_point_value),
-      killPointValue: Number(item.kill_point_value),
-      createdAt: item.created_at,
-      lastModified: item.last_modified
-    }));
+    return data.map(item => {
+      let teamsData = item.teams_data || [];
+      let mode = 'cs';
+      
+      if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
+        mode = teamsData.mode;
+        teamsData = teamsData.data;
+      } else if (item.mode) {
+        mode = item.mode;
+      }
+
+      return {
+        id: item.id,
+        name: item.name,
+        mode: mode,
+        teamsData: teamsData,
+        winPointValue: Number(item.win_point_value),
+        killPointValue: Number(item.kill_point_value),
+        createdAt: item.created_at,
+        lastModified: item.last_modified
+      };
+    });
   } catch (err) {
     console.error('Failed to load tournaments from Supabase', err);
     return [];
@@ -31,8 +42,11 @@ export const saveTournament = async (tournamentData) => {
     const payload = {
       id,
       name: tournamentData.name,
-      mode: tournamentData.mode || 'cs',
-      teams_data: tournamentData.teamsData,
+      teams_data: {
+        _wrapper: true,
+        mode: tournamentData.mode || 'cs',
+        data: tournamentData.teamsData
+      },
       win_point_value: tournamentData.winPointValue,
       kill_point_value: tournamentData.killPointValue,
       last_modified: new Date().toISOString()
