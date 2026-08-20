@@ -7,7 +7,7 @@ import { getSavedTournaments, saveTournament, deleteTournament } from './utils/s
 import './index.css';
 
 function App() {
-  const [step, setStep] = useState(sessionStorage.getItem('boss_esports_auth') === 'admin' ? 'dashboard' : 'home');
+  const [step, setStep] = useState(localStorage.getItem('boss_esports_auth') === 'admin' ? 'dashboard' : 'home');
   
   // Auth state
   const [username, setUsername] = useState('');
@@ -67,7 +67,7 @@ function App() {
     const isValidAdmin1 = username === 'admin1' && password === 'admin1';
     
     if (isValidAdmin || isValidAdmin1) {
-      sessionStorage.setItem('boss_esports_auth', 'admin');
+      localStorage.setItem('boss_esports_auth', 'admin');
       setStep('dashboard');
       setErrorMsg('');
     } else {
@@ -78,7 +78,7 @@ function App() {
   const handleLogout = () => {
     setUsername('');
     setPassword('');
-    sessionStorage.removeItem('boss_esports_auth');
+    localStorage.removeItem('boss_esports_auth');
     setStep('home');
   };
 
