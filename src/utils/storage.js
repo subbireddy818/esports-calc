@@ -46,11 +46,14 @@ export const saveTournament = async (tournamentData) => {
       .from('tournaments')
       .upsert(payload, { onConflict: 'id' });
       
-    if (error) throw error;
-    return true;
+    if (error) {
+      console.error('Failed to save tournament to Supabase', error);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
   } catch (err) {
     console.error('Failed to save tournament to Supabase', err);
-    return false;
+    return { success: false, error: err.message || String(err) };
   }
 };
 
