@@ -329,13 +329,62 @@ function App() {
         kills: 0, 
         booyahs: 0, 
         placementPoints: 0,
-        players: ['', '', '', '', '']
+        players: ['', '', '', '', ''],
+        matchHistory: Array.from({length: 6}, (_, i) => ({ matchNum: i+1, kills: '', rank: '' }))
       }
     ]);
   };
 
   const removeTeam = (id) => {
     setExtractedData(prev => prev.filter(t => t.id !== id));
+  };
+
+  const handleCloseModal = () => {
+    const team = extractedData.find(t => t.id === editingTeamPlayersId);
+    if (!team) {
+      setEditingTeamPlayersId(null);
+      return;
+    }
+
+    if (tournamentMode === 'br' && team.matchHistory) {
+      let totalKills = 0;
+      let totalBooyahs = 0;
+      let ranksArray = [];
+      let matchesPlayed = 0;
+      
+      team.matchHistory.forEach(m => {
+        if (m.kills !== '' || m.rank !== '') {
+          matchesPlayed++;
+        }
+        if (m.kills !== '') {
+          totalKills += Number(m.kills);
+        }
+        if (m.rank !== '') {
+          ranksArray.push(m.rank);
+          if (Number(m.rank) === 1) {
+            totalBooyahs++;
+          }
+        }
+      });
+      
+      setExtractedData(prev => prev.map(t => {
+        if (t.id === team.id) {
+          const isModalUsed = team.matchHistory.some(m => m.kills !== '' || m.rank !== '');
+          if (isModalUsed) {
+            return {
+              ...t,
+              matches: matchesPlayed,
+              kills: totalKills,
+              booyahs: totalBooyahs,
+              ranks: ranksArray.join(',')
+            };
+          }
+        }
+        return t;
+      }));
+    }
+    
+    setEditingTeamPlayersId(null);
   };
 
   const calculateResults = () => {
@@ -678,35 +727,79 @@ function App() {
         }}>
           <div className="panel" style={{width: '90%', maxWidth: '400px', maxHeight: '90vh', overflowY: 'auto'}}>
             <h3 style={{marginTop: 0, color: 'var(--color-gold)'}}>
-              Manage Players for {extractedData.find(t => t.id === editingTeamPlayersId)?.teamName}
+              Manage {tournamentMode === 'br' ? 'Match History' : 'Players'} for {extractedData.find(t => t.id === editingTeamPlayersId)?.teamName}
             </h3>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem'}}>
-              {[0, 1, 2, 3, 4].map(playerIndex => (
-                <div key={playerIndex}>
-                  <label style={{display: 'block', marginBottom: '0.2rem', fontSize: '0.9rem', color: 'var(--color-gold-light)'}}>
-                    Player {playerIndex + 1} {playerIndex === 4 ? '(Optional)' : ''}
-                  </label>
-                  <input 
-                    type="text" 
-                    value={extractedData.find(t => t.id === editingTeamPlayersId)?.players?.[playerIndex] || ''} 
-                    onChange={(e) => {
-                      const newPlayers = [...(extractedData.find(t => t.id === editingTeamPlayersId)?.players || ['', '', '', '', ''])];
-                      newPlayers[playerIndex] = e.target.value;
-                      updateTeamData(editingTeamPlayersId, 'players', newPlayers);
-                    }}
-                    style={{
-                      width: '100%', padding: '0.75rem', 
-                      background: 'var(--color-dark-red)', 
-                      border: '1px solid rgba(255, 90, 30, 0.3)', 
-                      color: 'var(--color-white)', 
-                      fontFamily: 'var(--font-main)'
-                    }}
-                    placeholder={`Enter Player ${playerIndex + 1} Name`}
-                  />
+            
+            {tournamentMode === 'br' ? (
+              <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem'}}>
+                <div style={{display: 'flex', gap: '0.5rem', color: 'var(--color-gold)', fontSize: '0.9rem', fontWeight: 'bold'}}>
+                  <div style={{flex: 1}}>Match</div>
+                  <div style={{flex: 1}}>Kills</div>
+                  <div style={{flex: 1}}>Rank</div>
                 </div>
-              ))}
-            </div>
-            <button className="btn" style={{marginTop: '1.5rem', width: '100%'}} onClick={() => setEditingTeamPlayersId(null)}>
+                {[0,1,2,3,4,5].map(mIndex => {
+                   const team = extractedData.find(t => t.id === editingTeamPlayersId);
+                   const history = team?.matchHistory || Array.from({length: 6}, (_, i) => ({ matchNum: i+1, kills: '', rank: '' }));
+                   const currentMatch = history[mIndex] || { matchNum: mIndex+1, kills: '', rank: '' };
+                   
+                   const updateHistory = (field, value) => {
+                     const newHistory = [...history];
+                     newHistory[mIndex] = { ...currentMatch, [field]: value.replace(/[^0-9]/g, '') };
+                     updateTeamData(editingTeamPlayersId, 'matchHistory', newHistory);
+                   };
+
+                   return (
+                     <div key={mIndex} style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                       <div style={{flex: 1, color: 'white', fontWeight: 'bold'}}>M {mIndex + 1}</div>
+                       <input 
+                         type="text" 
+                         inputMode="numeric" 
+                         value={currentMatch.kills} 
+                         onChange={e => updateHistory('kills', e.target.value)} 
+                         style={{flex: 1, textAlign: 'center', padding: '0.5rem', background: 'var(--color-dark-red)', border: '1px solid rgba(255, 90, 30, 0.3)', color: 'white'}} 
+                         placeholder="0" 
+                       />
+                       <input 
+                         type="text" 
+                         inputMode="numeric" 
+                         value={currentMatch.rank} 
+                         onChange={e => updateHistory('rank', e.target.value)} 
+                         style={{flex: 1, textAlign: 'center', padding: '0.5rem', background: 'var(--color-dark-red)', border: '1px solid rgba(255, 90, 30, 0.3)', color: 'white'}} 
+                         placeholder="-" 
+                       />
+                     </div>
+                   );
+                })}
+              </div>
+            ) : (
+              <div style={{display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem'}}>
+                {[0, 1, 2, 3, 4].map(playerIndex => (
+                  <div key={playerIndex}>
+                    <label style={{display: 'block', marginBottom: '0.2rem', fontSize: '0.9rem', color: 'var(--color-gold-light)'}}>
+                      Player {playerIndex + 1} {playerIndex === 4 ? '(Optional)' : ''}
+                    </label>
+                    <input 
+                      type="text" 
+                      value={extractedData.find(t => t.id === editingTeamPlayersId)?.players?.[playerIndex] || ''} 
+                      onChange={(e) => {
+                        const newPlayers = [...(extractedData.find(t => t.id === editingTeamPlayersId)?.players || ['', '', '', '', ''])];
+                        newPlayers[playerIndex] = e.target.value;
+                        updateTeamData(editingTeamPlayersId, 'players', newPlayers);
+                      }}
+                      style={{
+                        width: '100%', padding: '0.75rem', 
+                        background: 'var(--color-dark-red)', 
+                        border: '1px solid rgba(255, 90, 30, 0.3)', 
+                        color: 'var(--color-white)', 
+                        fontFamily: 'var(--font-main)'
+                      }}
+                      placeholder={`Enter Player ${playerIndex + 1} Name`}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+            <button className="btn" style={{marginTop: '1.5rem', width: '100%'}} onClick={handleCloseModal}>
               Done
             </button>
           </div>
