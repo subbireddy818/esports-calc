@@ -900,7 +900,7 @@ function App() {
                         </>
                       )}
                       <th>KILLS</th>
-                      <th>PTS</th>
+                      {tournamentMode === 'cs' && <th>PTS</th>}
                       <th>TOTAL</th>
                     </tr>
                   </thead>
@@ -960,7 +960,7 @@ function App() {
                           suppressContentEditableWarning={true}
                           onBlur={(e) => handleInlineEdit(team.id, 'kills', e.target.innerText)}
                         >{!team.isEmpty ? team.kills : ''}</td>
-                        <td>{!team.isEmpty ? (tournamentMode === 'cs' ? team.matchPoints : team.killPoints) : ''}</td>
+                        {tournamentMode === 'cs' && <td>{!team.isEmpty ? team.matchPoints : ''}</td>}
                         <td>{!team.isEmpty ? team.totalPoints : ''}</td>
                       </tr>
                     ))}
