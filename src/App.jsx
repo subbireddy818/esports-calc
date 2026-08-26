@@ -35,6 +35,8 @@ function App() {
   const [winPointValue, setWinPointValue] = useState(DEFAULT_WIN_POINT_VALUE);
   const [killPointValue, setKillPointValue] = useState(DEFAULT_KILL_POINT_VALUE);
   const [brPointsConfigText, setBrPointsConfigText] = useState(DEFAULT_BR_POINTS.join(', '));
+  const [championRushEnabled, setChampionRushEnabled] = useState(true);
+  const [championRushThreshold, setChampionRushThreshold] = useState(60);
   const [showSettings, setShowSettings] = useState(false);
   const [editingTeamPlayersId, setEditingTeamPlayersId] = useState(null);
   const [scale, setScale] = useState(1);
@@ -103,6 +105,8 @@ function App() {
     setWinPointValue(t.winPointValue || DEFAULT_WIN_POINT_VALUE);
     setKillPointValue(t.killPointValue || DEFAULT_KILL_POINT_VALUE);
     setBrPointsConfigText(t.brPointsConfigText || DEFAULT_BR_POINTS.join(', '));
+    setChampionRushEnabled(t.championRushEnabled !== false);
+    setChampionRushThreshold(t.championRushThreshold || 60);
     setStep('edit');
   };
 
@@ -121,7 +125,9 @@ function App() {
       teamsData: extractedData,
       winPointValue,
       killPointValue,
-      brPointsConfigText
+      brPointsConfigText,
+      championRushEnabled,
+      championRushThreshold
     });
     if (result.success) {
       alert('Tournament saved successfully to Cloud!');
@@ -642,6 +648,29 @@ function App() {
                 style={{width: '100%', fontSize: '1.1rem', boxSizing: 'border-box'}}
               />
             </div>
+            
+            <div style={{border: '1px solid var(--color-red-main)', padding: '1rem', background: 'rgba(255,0,0,0.05)', borderRadius: '4px', flexGrow: 1}}>
+              <h4 style={{margin: '0 0 8px 0', color: 'var(--color-gold-light)', fontSize: '1.1rem'}}>Champion Rush (Trophy)</h4>
+              <div style={{display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '10px'}}>
+                <label style={{display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer'}}>
+                  <input 
+                    type="checkbox" 
+                    checked={championRushEnabled} 
+                    onChange={e => setChampionRushEnabled(e.target.checked)} 
+                    style={{width: '18px', height: '18px'}}
+                  />
+                  Enable Trophy
+                </label>
+              </div>
+              <label style={{marginRight: '1rem', fontWeight: 'bold'}}>Points Threshold: </label>
+              <input 
+                type="number" 
+                value={championRushThreshold} 
+                onChange={e => setChampionRushThreshold(Number(e.target.value))}
+                style={{width: '80px', fontSize: '1.1rem'}}
+                disabled={!championRushEnabled}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -918,7 +947,7 @@ function App() {
                             >
                               {team.teamName || ''}
                             </span>
-                            {team.totalPoints >= 60 && <span className="team-trophy" contentEditable={false}>🏆</span>}
+                            {championRushEnabled && team.totalPoints >= championRushThreshold && <span className="team-trophy" contentEditable={false}>🏆</span>}
                           </div>
                         </td>
                         <td 

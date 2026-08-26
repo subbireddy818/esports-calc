@@ -12,10 +12,14 @@ export const getSavedTournaments = async () => {
       let teamsData = item.teams_data || [];
       let mode = 'cs';
       let brPointsConfigText = undefined;
+      let championRushEnabled = true;
+      let championRushThreshold = 60;
       
       if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
         mode = teamsData.mode;
         brPointsConfigText = teamsData.brPointsConfigText;
+        if (teamsData.championRushEnabled !== undefined) championRushEnabled = teamsData.championRushEnabled;
+        if (teamsData.championRushThreshold !== undefined) championRushThreshold = teamsData.championRushThreshold;
         teamsData = teamsData.data;
       } else if (item.mode) {
         mode = item.mode;
@@ -29,6 +33,8 @@ export const getSavedTournaments = async () => {
         winPointValue: Number(item.win_point_value),
         killPointValue: Number(item.kill_point_value),
         brPointsConfigText: brPointsConfigText,
+        championRushEnabled: championRushEnabled,
+        championRushThreshold: championRushThreshold,
         createdAt: item.created_at,
         lastModified: item.last_modified
       };
@@ -49,6 +55,8 @@ export const saveTournament = async (tournamentData) => {
         _wrapper: true,
         mode: tournamentData.mode || 'cs',
         brPointsConfigText: tournamentData.brPointsConfigText,
+        championRushEnabled: tournamentData.championRushEnabled,
+        championRushThreshold: tournamentData.championRushThreshold,
         data: tournamentData.teamsData
       },
       win_point_value: tournamentData.winPointValue,

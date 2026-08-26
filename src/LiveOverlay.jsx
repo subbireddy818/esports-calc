@@ -8,6 +8,9 @@ export default function LiveOverlay() {
   const [mode, setMode] = useState('cs');
   const [tournamentName, setTournamentName] = useState('LIVE STANDINGS');
 
+  const [championRushEnabled, setChampionRushEnabled] = useState(true);
+  const [championRushThreshold, setChampionRushThreshold] = useState(60);
+
   // Read the tournament ID from the URL
   const tournamentId = new URLSearchParams(window.location.search).get('id');
 
@@ -21,16 +24,22 @@ export default function LiveOverlay() {
         let teamsData = data.teams_data || [];
         let tMode = 'cs';
         let brConfigText = DEFAULT_BR_POINTS.join(',');
+        let cRushEnabled = true;
+        let cRushThreshold = 60;
         
         if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
           tMode = teamsData.mode;
           if (teamsData.brPointsConfigText) brConfigText = teamsData.brPointsConfigText;
+          if (teamsData.championRushEnabled !== undefined) cRushEnabled = teamsData.championRushEnabled;
+          if (teamsData.championRushThreshold !== undefined) cRushThreshold = teamsData.championRushThreshold;
           teamsData = teamsData.data;
         } else if (data.mode) {
           tMode = data.mode;
         }
         setMode(tMode);
         setTournamentName(data.name);
+        setChampionRushEnabled(cRushEnabled);
+        setChampionRushThreshold(cRushThreshold);
         
         const brConfig = brConfigText.split(',').map(n => Number(n.trim()));
         setStandings(calculateStandings(teamsData, tMode, Number(data.win_point_value), Number(data.kill_point_value), brConfig));
@@ -72,7 +81,7 @@ export default function LiveOverlay() {
               <td className="left-align team-name">
                 <div className="team-name-wrapper">
                   <span className="team-name-text">{team.teamName || '---'}</span>
-                  {team.totalPoints >= 60 && <span className="team-trophy">🏆</span>}
+                  {championRushEnabled && team.totalPoints >= championRushThreshold && <span className="team-trophy">🏆</span>}
                 </div>
               </td>
               <td>{team.match || 0}</td>
