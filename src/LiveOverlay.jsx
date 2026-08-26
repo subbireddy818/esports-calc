@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from './utils/supabase';
-import { calculateStandings } from './utils/scoring';
+import { calculateStandings, DEFAULT_BR_POINTS } from './utils/scoring';
 import './LiveOverlay.css';
 
 export default function LiveOverlay() {
@@ -20,15 +20,20 @@ export default function LiveOverlay() {
       if (data) {
         let teamsData = data.teams_data || [];
         let tMode = 'cs';
+        let brConfigText = DEFAULT_BR_POINTS.join(',');
+        
         if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
           tMode = teamsData.mode;
+          if (teamsData.brPointsConfigText) brConfigText = teamsData.brPointsConfigText;
           teamsData = teamsData.data;
         } else if (data.mode) {
           tMode = data.mode;
         }
         setMode(tMode);
         setTournamentName(data.name);
-        setStandings(calculateStandings(teamsData, tMode, Number(data.win_point_value), Number(data.kill_point_value)));
+        
+        const brConfig = brConfigText.split(',').map(n => Number(n.trim()));
+        setStandings(calculateStandings(teamsData, tMode, Number(data.win_point_value), Number(data.kill_point_value), brConfig));
       }
     };
 

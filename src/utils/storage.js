@@ -11,9 +11,11 @@ export const getSavedTournaments = async () => {
     return data.map(item => {
       let teamsData = item.teams_data || [];
       let mode = 'cs';
+      let brPointsConfigText = undefined;
       
       if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
         mode = teamsData.mode;
+        brPointsConfigText = teamsData.brPointsConfigText;
         teamsData = teamsData.data;
       } else if (item.mode) {
         mode = item.mode;
@@ -26,6 +28,7 @@ export const getSavedTournaments = async () => {
         teamsData: teamsData,
         winPointValue: Number(item.win_point_value),
         killPointValue: Number(item.kill_point_value),
+        brPointsConfigText: brPointsConfigText,
         createdAt: item.created_at,
         lastModified: item.last_modified
       };
@@ -45,6 +48,7 @@ export const saveTournament = async (tournamentData) => {
       teams_data: {
         _wrapper: true,
         mode: tournamentData.mode || 'cs',
+        brPointsConfigText: tournamentData.brPointsConfigText,
         data: tournamentData.teamsData
       },
       win_point_value: tournamentData.winPointValue,

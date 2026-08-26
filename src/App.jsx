@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Tesseract from 'tesseract.js';
 import { toPng } from 'html-to-image';
 import { Upload, Download, Settings, Edit, Plus, Trash2, Image as ImageIcon, Save, LogOut, FileText, ArrowLeft } from 'lucide-react';
-import { calculateStandings, DEFAULT_WIN_POINT_VALUE, DEFAULT_KILL_POINT_VALUE } from './utils/scoring';
+import { calculateStandings, DEFAULT_WIN_POINT_VALUE, DEFAULT_KILL_POINT_VALUE, DEFAULT_BR_POINTS } from './utils/scoring';
 import { getSavedTournaments, saveTournament, deleteTournament } from './utils/storage';
 import LiveOverlay from './LiveOverlay';
 import './index.css';
@@ -34,6 +34,7 @@ function App() {
   
   const [winPointValue, setWinPointValue] = useState(DEFAULT_WIN_POINT_VALUE);
   const [killPointValue, setKillPointValue] = useState(DEFAULT_KILL_POINT_VALUE);
+  const [brPointsConfigText, setBrPointsConfigText] = useState(DEFAULT_BR_POINTS.join(', '));
   const [showSettings, setShowSettings] = useState(false);
   const [editingTeamPlayersId, setEditingTeamPlayersId] = useState(null);
   const [scale, setScale] = useState(1);
@@ -101,6 +102,7 @@ function App() {
     setExtractedData(t.teamsData || []);
     setWinPointValue(t.winPointValue || DEFAULT_WIN_POINT_VALUE);
     setKillPointValue(t.killPointValue || DEFAULT_KILL_POINT_VALUE);
+    setBrPointsConfigText(t.brPointsConfigText || DEFAULT_BR_POINTS.join(', '));
     setStep('edit');
   };
 
@@ -118,7 +120,8 @@ function App() {
       mode: tournamentMode,
       teamsData: extractedData,
       winPointValue,
-      killPointValue
+      killPointValue,
+      brPointsConfigText
     });
     if (result.success) {
       alert('Tournament saved successfully to Cloud!');
@@ -260,7 +263,8 @@ function App() {
     
     setExtractedData(prev => {
       const newData = prev.map(team => team.id === teamId ? { ...team, [field]: parsedValue } : team);
-      const finalStandings = calculateStandings(newData, tournamentMode, winPointValue, killPointValue);
+      const brConfig = brPointsConfigText.split(',').map(n => Number(n.trim()));
+      const finalStandings = calculateStandings(newData, tournamentMode, winPointValue, killPointValue, brConfig);
       setStandings(finalStandings);
       return newData;
     });
@@ -335,7 +339,8 @@ function App() {
   };
 
   const calculateResults = () => {
-    const finalStandings = calculateStandings(extractedData, tournamentMode, winPointValue, killPointValue);
+    const brConfig = brPointsConfigText.split(',').map(n => Number(n.trim()));
+    const finalStandings = calculateStandings(extractedData, tournamentMode, winPointValue, killPointValue, brConfig);
     setStandings(finalStandings);
     setStep('result');
   };
@@ -555,7 +560,7 @@ function App() {
           
           <div style={{display: 'flex', gap: '2rem', flexWrap: 'wrap'}}>
             <div style={{border: '1px solid var(--color-red-main)', padding: '1rem', background: 'rgba(255,0,0,0.05)', borderRadius: '4px'}}>
-              <h4 style={{margin: '0 0 8px 0', color: 'var(--color-gold-light)', fontSize: '1.1rem'}}>Position Points (POS)</h4>
+              <h4 style={{margin: '0 0 8px 0', color: 'var(--color-gold-light)', fontSize: '1.1rem'}}>Position Points (CS)</h4>
               <p style={{margin: '0 0 10px 0', fontSize: '0.9rem', color: 'var(--color-text-muted)'}}>If WIN, award these points. (Loss = 0)</p>
               <label style={{marginRight: '1rem', fontWeight: 'bold'}}>Win Points: </label>
               <input 
@@ -577,6 +582,17 @@ function App() {
                 style={{width: '80px', fontSize: '1.1rem'}}
               />
             </div>
+
+            <div style={{border: '1px solid var(--color-red-main)', padding: '1rem', background: 'rgba(255,0,0,0.05)', borderRadius: '4px', flexGrow: 1}}>
+              <h4 style={{margin: '0 0 8px 0', color: 'var(--color-gold-light)', fontSize: '1.1rem'}}>BR Points Distribution</h4>
+              <p style={{margin: '0 0 10px 0', fontSize: '0.9rem', color: 'var(--color-text-muted)'}}>Points for 1st, 2nd, 3rd... (comma separated)</p>
+              <input 
+                type="text" 
+                value={brPointsConfigText} 
+                onChange={(e) => setBrPointsConfigText(e.target.value)}
+                style={{width: '100%', fontSize: '1.1rem', boxSizing: 'border-box'}}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -596,7 +612,7 @@ function App() {
               ) : (
                 <>
                   <th>Booyahs</th>
-                  <th>Place Pts</th>
+                  <th>Ranks (e.g. 1,5)</th>
                 </>
               )}
               <th>Kills</th>
@@ -631,8 +647,8 @@ function App() {
                     <td data-label="Booyahs">
                       <input id={`input-${index}-2`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => handleNumberChange(team.id, 'booyahs', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 2)} />
                     </td>
-                    <td data-label="Place Pts">
-                      <input id={`input-${index}-3`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.placementPoints !== undefined ? team.placementPoints : ''} onChange={e => handleNumberChange(team.id, 'placementPoints', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 3)} />
+                    <td data-label="Ranks">
+                      <input id={`input-${index}-3`} type="text" style={{textAlign: 'right'}} value={team.ranks !== undefined ? team.ranks : ''} placeholder={team.placementPoints ? `Pts: ${team.placementPoints}` : ''} onChange={e => updateTeamData(team.id, 'ranks', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 3)} />
                     </td>
                   </>
                 )}
