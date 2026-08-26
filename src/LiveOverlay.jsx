@@ -64,7 +64,12 @@ export default function LiveOverlay() {
           {standings.slice(0, 12).map((team, index) => (
             <tr key={team.id || index}>
               <td>{index + 1}</td>
-              <td className="left-align team-name">{team.teamName || '---'}{team.totalPoints >= 60 ? ' 🏆' : ''}</td>
+              <td className="left-align team-name">
+                <div className="team-name-wrapper">
+                  <span className="team-name-text">{team.teamName || '---'}</span>
+                  {team.totalPoints >= 60 && <span className="team-trophy">🏆</span>}
+                </div>
+              </td>
               <td>{team.match || 0}</td>
               {mode === 'cs' ? (
                 <><td>{team.wins || 0}</td><td>{team.losses || 0}</td></>

@@ -350,11 +350,31 @@ body {
 .scoreboard-table td:nth-child(2) {
   text-align: left;
   padding-left: 20px;
+  padding-right: 15px;
   font-size: 26px; /* Reduced to fit long names */
   font-weight: 700;
+}
+
+.team-name-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.team-name-text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-grow: 1;
+  outline: none;
+}
+
+.team-trophy {
+  flex-shrink: 0;
+  margin-left: 8px;
+  user-select: none;
 }
 
 /* TOTAL column specific styling (make it pop a bit more if needed) */

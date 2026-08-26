@@ -52,3 +52,22 @@ body {
 .live-table .left-align { text-align: left; }
 .live-table .team-name { color: #FFC107; font-size: 20px; }
 .live-table .highlight-pts { color: #00E676; font-size: 22px; }
+
+.team-name-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.team-name-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.team-trophy {
+  flex-shrink: 0;
+  margin-left: 8px;
+}

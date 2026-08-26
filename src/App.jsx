@@ -799,11 +799,19 @@ function App() {
                     {displayStandings.slice(0, 12).map((team, index) => (
                       <tr key={index} className={team.isEmpty ? 'empty-row' : ''}>
                         <td>{String(index + 1).padStart(2, '0')}</td>
-                        <td 
-                          contentEditable={!team.isEmpty} 
-                          suppressContentEditableWarning={true}
-                          onBlur={(e) => handleInlineEdit(team.id, 'teamName', e.target.innerText)}
-                        >{team.teamName || ''}{team.totalPoints >= 60 ? ' 🏆' : ''}</td>
+                        <td>
+                          <div className="team-name-wrapper">
+                            <span 
+                              className="team-name-text"
+                              contentEditable={!team.isEmpty} 
+                              suppressContentEditableWarning={true}
+                              onBlur={(e) => handleInlineEdit(team.id, 'teamName', e.target.innerText)}
+                            >
+                              {team.teamName || ''}
+                            </span>
+                            {team.totalPoints >= 60 && <span className="team-trophy" contentEditable={false}>🏆</span>}
+                          </div>
+                        </td>
                         <td 
                           contentEditable={!team.isEmpty} 
                           suppressContentEditableWarning={true}
