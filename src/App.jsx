@@ -732,8 +732,8 @@ function App() {
             
             {tournamentMode === 'br' ? (
               <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem'}}>
-                <div style={{display: 'flex', gap: '0.5rem', color: 'var(--color-gold)', fontSize: '0.9rem', fontWeight: 'bold'}}>
-                  <div style={{flex: 1}}>Match</div>
+                <div style={{display: 'flex', gap: '0.5rem', color: 'var(--color-gold)', fontSize: '0.85rem', fontWeight: 'bold', textAlign: 'center'}}>
+                  <div style={{flex: '0 0 50px', textAlign: 'left'}}>Match</div>
                   <div style={{flex: 1}}>Kills</div>
                   <div style={{flex: 1}}>Rank</div>
                 </div>
@@ -750,13 +750,13 @@ function App() {
 
                    return (
                      <div key={mIndex} style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-                       <div style={{flex: 1, color: 'white', fontWeight: 'bold'}}>M {mIndex + 1}</div>
+                       <div style={{flex: '0 0 50px', color: 'white', fontWeight: 'bold', fontSize: '0.9rem', whiteSpace: 'nowrap'}}>M {mIndex + 1}</div>
                        <input 
                          type="text" 
                          inputMode="numeric" 
                          value={currentMatch.kills} 
                          onChange={e => updateHistory('kills', e.target.value)} 
-                         style={{flex: 1, textAlign: 'center', padding: '0.5rem', background: 'var(--color-dark-red)', border: '1px solid rgba(255, 90, 30, 0.3)', color: 'white'}} 
+                         style={{flex: 1, minWidth: '0', textAlign: 'center', padding: '0.5rem 0.2rem', background: 'var(--color-dark-red)', border: '1px solid rgba(255, 90, 30, 0.3)', color: 'white'}} 
                          placeholder="0" 
                        />
                        <input 
@@ -764,7 +764,7 @@ function App() {
                          inputMode="numeric" 
                          value={currentMatch.rank} 
                          onChange={e => updateHistory('rank', e.target.value)} 
-                         style={{flex: 1, textAlign: 'center', padding: '0.5rem', background: 'var(--color-dark-red)', border: '1px solid rgba(255, 90, 30, 0.3)', color: 'white'}} 
+                         style={{flex: 1, minWidth: '0', textAlign: 'center', padding: '0.5rem 0.2rem', background: 'var(--color-dark-red)', border: '1px solid rgba(255, 90, 30, 0.3)', color: 'white'}} 
                          placeholder="-" 
                        />
                      </div>
