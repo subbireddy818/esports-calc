@@ -256,7 +256,7 @@ function App() {
 
   const handleInlineEdit = (teamId, field, value) => {
     if (!teamId) return;
-    const parsedValue = field === 'teamName' ? value.trim() : Number(value);
+    const parsedValue = field === 'teamName' ? value.replace(/🏆/g, '').trim() : Number(value);
     
     setExtractedData(prev => {
       const newData = prev.map(team => team.id === teamId ? { ...team, [field]: parsedValue } : team);
@@ -803,7 +803,7 @@ function App() {
                           contentEditable={!team.isEmpty} 
                           suppressContentEditableWarning={true}
                           onBlur={(e) => handleInlineEdit(team.id, 'teamName', e.target.innerText)}
-                        >{team.teamName || ''}</td>
+                        >{team.teamName || ''}{team.totalPoints >= 60 ? ' 🏆' : ''}</td>
                         <td 
                           contentEditable={!team.isEmpty} 
                           suppressContentEditableWarning={true}
