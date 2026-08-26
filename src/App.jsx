@@ -4,6 +4,7 @@ import { toPng } from 'html-to-image';
 import { Upload, Download, Settings, Edit, Plus, Trash2, Image as ImageIcon, Save, LogOut, FileText, ArrowLeft } from 'lucide-react';
 import { calculateStandings, DEFAULT_WIN_POINT_VALUE, DEFAULT_KILL_POINT_VALUE } from './utils/scoring';
 import { getSavedTournaments, saveTournament, deleteTournament } from './utils/storage';
+import LiveOverlay from './LiveOverlay';
 import './index.css';
 
 function App() {
@@ -446,6 +447,13 @@ function App() {
                 <p style={{margin: 0, fontSize: '0.9rem', color: 'var(--color-text-muted)'}}>Last modified: {new Date(t.lastModified).toLocaleString()}</p>
               </div>
               <div style={{display: 'flex', gap: '1rem'}}>
+                <button className="btn btn-secondary" onClick={() => {
+                  const url = `${window.location.origin}/?live=true&id=${t.id}`;
+                  navigator.clipboard.writeText(url);
+                  alert('Live Overlay URL copied to clipboard! Paste this into PRISM Live Studio as a Web Source.');
+                }} style={{display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#00E676', borderColor: '#00E676'}}>
+                  Live Overlay
+                </button>
                 <button className="btn btn-secondary" onClick={() => loadTournament(t)} style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
                   <FileText size={16} /> Open
                 </button>
@@ -854,6 +862,11 @@ function App() {
       </div>
     );
   };
+
+  const isLiveOverlay = new URLSearchParams(window.location.search).get('live') === 'true';
+  if (isLiveOverlay) {
+    return <LiveOverlay />;
+  }
 
   return (
     <div className="app-container">
