@@ -7,7 +7,8 @@ export default function LiveOverlay() {
   const [standings, setStandings] = useState([]);
   const [mode, setMode] = useState('cs');
   const [tournamentName, setTournamentName] = useState('LIVE STANDINGS');
-  const [tournamentSubtitle, setTournamentSubtitle] = useState('OVERALL STANDINGS');
+  const [matchDay, setMatchDay] = useState('Day 1');
+  const [matchDate, setMatchDate] = useState('');
 
   const [championRushEnabled, setChampionRushEnabled] = useState(true);
   const [championRushThreshold, setChampionRushThreshold] = useState(60);
@@ -27,11 +28,14 @@ export default function LiveOverlay() {
         let brConfigText = DEFAULT_BR_POINTS.join(',');
         let cRushEnabled = true;
         let cRushThreshold = 60;
-        let subtitle = 'OVERALL STANDINGS';
+        let dDay = 'Day 1';
+        let dDate = '';
         
         if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
           tMode = teamsData.mode;
-          if (teamsData.subtitle) subtitle = teamsData.subtitle;
+          if (teamsData.matchDay) dDay = teamsData.matchDay;
+          if (teamsData.matchDate) dDate = teamsData.matchDate;
+          if (teamsData.subtitle && !teamsData.matchDay) dDay = teamsData.subtitle;
           if (teamsData.brPointsConfigText) brConfigText = teamsData.brPointsConfigText;
           if (teamsData.championRushEnabled !== undefined) cRushEnabled = teamsData.championRushEnabled;
           if (teamsData.championRushThreshold !== undefined) cRushThreshold = teamsData.championRushThreshold;
@@ -41,7 +45,8 @@ export default function LiveOverlay() {
         }
         setMode(tMode);
         setTournamentName(data.name || 'BOSS ESPORTS TOURNAMENT');
-        setTournamentSubtitle(subtitle);
+        setMatchDay(dDay);
+        setMatchDate(dDate);
         setChampionRushEnabled(cRushEnabled);
         setChampionRushThreshold(cRushThreshold);
         
@@ -61,7 +66,7 @@ export default function LiveOverlay() {
     <div className="live-overlay-container">
       <div className="live-header">
         <h1>{tournamentName}</h1>
-        <h2>{tournamentSubtitle}</h2>
+        <h2>{matchDay} {matchDate ? `• ${matchDate}` : ''}</h2>
       </div>
       <table className="live-table">
         <thead>

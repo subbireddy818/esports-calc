@@ -20,7 +20,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTournamentId, setCurrentTournamentId] = useState(null);
   const [tournamentName, setTournamentName] = useState('New Tournament');
-  const [tournamentSubtitle, setTournamentSubtitle] = useState('OVERALL STANDINGS');
+  const [matchDay, setMatchDay] = useState('Day 1');
+  const [matchDate, setMatchDate] = useState(() => new Date().toLocaleDateString('en-GB'));
   const [tournamentMode, setTournamentMode] = useState('cs');
 
   // Calculator State
@@ -91,7 +92,8 @@ function App() {
     setCurrentTournamentId(Date.now().toString());
     setTournamentMode(mode);
     setTournamentName('BOSS ESPORTS TOURNAMENT');
-    setTournamentSubtitle('Match Day ' + new Date().toLocaleDateString());
+    setMatchDay('Day 1');
+    setMatchDate(new Date().toLocaleDateString('en-GB'));
     setExtractedData([]);
     setImage(null);
     setBgImage(null);
@@ -102,7 +104,8 @@ function App() {
   const loadTournament = (t) => {
     setCurrentTournamentId(t.id);
     setTournamentName(t.name || 'BOSS ESPORTS TOURNAMENT');
-    setTournamentSubtitle(t.subtitle || 'OVERALL STANDINGS');
+    setMatchDay(t.matchDay || 'Day 1');
+    setMatchDate(t.matchDate || new Date().toLocaleDateString('en-GB'));
     setTournamentMode(t.mode || 'cs');
     setExtractedData(t.teamsData || []);
     setWinPointValue(t.winPointValue || DEFAULT_WIN_POINT_VALUE);
@@ -124,7 +127,8 @@ function App() {
     const result = await saveTournament({
       id: currentTournamentId,
       name: tournamentName,
-      subtitle: tournamentSubtitle,
+      matchDay,
+      matchDate,
       mode: tournamentMode,
       teamsData: extractedData,
       winPointValue,
@@ -596,7 +600,7 @@ function App() {
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap'}}>
           <button className="btn btn-secondary" onClick={() => setStep('dashboard')}><ArrowLeft size={16} /> Dashboard</button>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '4px'}}>
+          <div style={{display: 'flex', gap: '4px'}}>
             <input 
               type="text" 
               value={tournamentName}
@@ -606,10 +610,17 @@ function App() {
             />
             <input 
               type="text" 
-              value={tournamentSubtitle}
-              onChange={e => setTournamentSubtitle(e.target.value)}
-              placeholder="Subtitle (e.g. Match Day 1)"
-              style={{background: 'transparent', border: 'none', borderBottom: '1px solid var(--color-gold-light)', color: 'var(--color-white)', fontSize: '1rem', fontFamily: 'var(--font-main)'}}
+              value={matchDay}
+              onChange={e => setMatchDay(e.target.value)}
+              placeholder="e.g. Day 1"
+              style={{background: 'transparent', border: 'none', borderBottom: '1px solid var(--color-gold-light)', color: 'var(--color-white)', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', width: '100px'}}
+            />
+            <input 
+              type="text" 
+              value={matchDate}
+              onChange={e => setMatchDate(e.target.value)}
+              placeholder="Date"
+              style={{background: 'transparent', border: 'none', borderBottom: '1px solid var(--color-gold-light)', color: 'var(--color-white)', fontSize: '1.5rem', fontFamily: 'var(--font-heading)', width: '150px'}}
             />
           </div>
         </div>
@@ -921,7 +932,7 @@ function App() {
             <div className="scoreboard-content" style={{ position: 'relative', zIndex: 1 }}>
               <h1 className="scoreboard-main-title">{tournamentName.toUpperCase()}</h1>
               <div className="scoreboard-title-box">
-                <h3>{tournamentSubtitle.toUpperCase()}</h3>
+                <h3>{matchDay.toUpperCase()} | {matchDate}</h3>
               </div>
               
               <div className="scoreboard-table-container">

@@ -14,12 +14,15 @@ export const getSavedTournaments = async () => {
       let brPointsConfigText = undefined;
       let championRushEnabled = true;
       let championRushThreshold = 60;
-      let subtitle = 'OVERALL STANDINGS';
+      let matchDay = 'Day 1';
+      let matchDate = new Date().toLocaleDateString('en-GB');
       
       if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
         mode = teamsData.mode;
         brPointsConfigText = teamsData.brPointsConfigText;
-        if (teamsData.subtitle !== undefined) subtitle = teamsData.subtitle;
+        if (teamsData.matchDay !== undefined) matchDay = teamsData.matchDay;
+        if (teamsData.matchDate !== undefined) matchDate = teamsData.matchDate;
+        if (teamsData.subtitle !== undefined && teamsData.matchDay === undefined) matchDay = teamsData.subtitle; // fallback
         if (teamsData.championRushEnabled !== undefined) championRushEnabled = teamsData.championRushEnabled;
         if (teamsData.championRushThreshold !== undefined) championRushThreshold = teamsData.championRushThreshold;
         teamsData = teamsData.data;
@@ -30,7 +33,8 @@ export const getSavedTournaments = async () => {
       return {
         id: item.id,
         name: item.name,
-        subtitle: subtitle,
+        matchDay,
+        matchDate,
         mode: mode,
         teamsData: teamsData,
         winPointValue: Number(item.win_point_value),
@@ -57,7 +61,8 @@ export const saveTournament = async (tournamentData) => {
       teams_data: {
         _wrapper: true,
         mode: tournamentData.mode || 'cs',
-        subtitle: tournamentData.subtitle,
+        matchDay: tournamentData.matchDay,
+        matchDate: tournamentData.matchDate,
         brPointsConfigText: tournamentData.brPointsConfigText,
         championRushEnabled: tournamentData.championRushEnabled,
         championRushThreshold: tournamentData.championRushThreshold,
