@@ -73,7 +73,6 @@ export default function LiveOverlay() {
           <tr>
             <th>#</th>
             <th className="left-align">TEAM</th>
-            <th className="slash-separator" style={{letterSpacing: '-2px'}}>////</th>
             <th>M</th>
             <th className="slash-separator">/</th>
             {mode === 'cs' ? (
@@ -97,7 +96,6 @@ export default function LiveOverlay() {
                   {championRushEnabled && team.totalPoints >= championRushThreshold && <span className="team-trophy">🏆</span>}
                 </div>
               </td>
-              <td className="slash-separator" style={{letterSpacing: '-2px'}}>////</td>
               <td>{team.match || 0}</td>
               <td className="slash-separator">/</td>
               {mode === 'cs' ? (
