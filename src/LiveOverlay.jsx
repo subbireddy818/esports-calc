@@ -73,13 +73,17 @@ export default function LiveOverlay() {
           <tr>
             <th>#</th>
             <th className="left-align">TEAM</th>
+            <th className="slash-separator" style={{letterSpacing: '-2px'}}>////</th>
             <th>M</th>
+            <th className="slash-separator">/</th>
             {mode === 'cs' ? (
-              <><th>W</th><th>L</th></>
+              <><th>W</th><th className="slash-separator">/</th><th>L</th></>
             ) : (
-              <><th>B</th><th>PL</th></>
+              <><th>B</th><th className="slash-separator">/</th><th>PL</th></>
             )}
+            <th className="slash-separator">/</th>
             <th>K</th>
+            <th className="slash-separator">/</th>
             <th>PTS</th>
           </tr>
         </thead>
@@ -93,13 +97,17 @@ export default function LiveOverlay() {
                   {championRushEnabled && team.totalPoints >= championRushThreshold && <span className="team-trophy">🏆</span>}
                 </div>
               </td>
+              <td className="slash-separator" style={{letterSpacing: '-2px'}}>////</td>
               <td>{team.match || 0}</td>
+              <td className="slash-separator">/</td>
               {mode === 'cs' ? (
-                <><td>{team.wins || 0}</td><td>{team.losses || 0}</td></>
+                <><td>{team.wins || 0}</td><td className="slash-separator">/</td><td>{team.losses || 0}</td></>
               ) : (
-                <><td>{team.booyahs || 0}</td><td>{team.placementPoints || 0}</td></>
+                <><td>{team.booyahs || 0}</td><td className="slash-separator">/</td><td>{team.placementPoints || 0}</td></>
               )}
+              <td className="slash-separator">/</td>
               <td>{team.kills || 0}</td>
+              <td className="slash-separator">/</td>
               <td className="highlight-pts">{team.totalPoints || 0}</td>
             </tr>
           ))}
