@@ -751,7 +751,7 @@ function App() {
                       <input id={`input-${index}-2`} type="text" inputMode="numeric" style={{textAlign: 'right'}} value={team.booyahs !== undefined ? team.booyahs : ''} onChange={e => handleNumberChange(team.id, 'booyahs', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 2)} />
                     </td>
                     <td data-label="Ranks">
-                      <input id={`input-${index}-3`} type="text" style={{textAlign: 'right'}} value={team.ranks !== undefined ? team.ranks : ''} placeholder={team.placementPoints ? `Pts: ${team.placementPoints}` : ''} onChange={e => updateTeamData(team.id, 'ranks', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 3)} />
+                      <input id={`input-${index}-3`} type="text" style={{textAlign: 'right'}} value={team.ranks !== undefined ? team.ranks : ''} onChange={e => updateTeamData(team.id, 'ranks', e.target.value)} onKeyDown={e => handleKeyDown(e, index, 3)} />
                     </td>
                   </>
                 )}
