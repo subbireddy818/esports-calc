@@ -27,7 +27,7 @@ body {
 .live-table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(80, 80, 80, 0.6);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -36,22 +36,23 @@ body {
   background: rgba(229, 57, 53, 0.8);
   padding: 8px;
   font-family: 'Anton', sans-serif;
-  font-size: 18px;
+  font-size: 19px;
   color: #FFC107;
   text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .live-table td {
   padding: 8px;
   text-align: center;
-  font-weight: 700;
-  font-size: 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-weight: 900;
+  font-size: 19px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .live-table .left-align { text-align: left; }
-.live-table .team-name { color: #FFC107; font-size: 20px; }
-.live-table .highlight-pts { color: #00E676; font-size: 22px; }
+.live-table .team-name { color: #FFC107; font-size: 21px; font-weight: 900; letter-spacing: 0.5px; }
+.live-table .highlight-pts { color: #00E676; font-size: 28px; font-family: 'Anton', sans-serif; letter-spacing: 1px; }
 
 .team-name-wrapper {
   display: flex;
