@@ -14,10 +14,12 @@ export const getSavedTournaments = async () => {
       let brPointsConfigText = undefined;
       let championRushEnabled = true;
       let championRushThreshold = 60;
+      let subtitle = 'OVERALL STANDINGS';
       
       if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
         mode = teamsData.mode;
         brPointsConfigText = teamsData.brPointsConfigText;
+        if (teamsData.subtitle !== undefined) subtitle = teamsData.subtitle;
         if (teamsData.championRushEnabled !== undefined) championRushEnabled = teamsData.championRushEnabled;
         if (teamsData.championRushThreshold !== undefined) championRushThreshold = teamsData.championRushThreshold;
         teamsData = teamsData.data;
@@ -28,6 +30,7 @@ export const getSavedTournaments = async () => {
       return {
         id: item.id,
         name: item.name,
+        subtitle: subtitle,
         mode: mode,
         teamsData: teamsData,
         winPointValue: Number(item.win_point_value),
@@ -54,6 +57,7 @@ export const saveTournament = async (tournamentData) => {
       teams_data: {
         _wrapper: true,
         mode: tournamentData.mode || 'cs',
+        subtitle: tournamentData.subtitle,
         brPointsConfigText: tournamentData.brPointsConfigText,
         championRushEnabled: tournamentData.championRushEnabled,
         championRushThreshold: tournamentData.championRushThreshold,

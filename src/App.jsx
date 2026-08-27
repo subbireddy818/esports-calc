@@ -20,6 +20,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTournamentId, setCurrentTournamentId] = useState(null);
   const [tournamentName, setTournamentName] = useState('New Tournament');
+  const [tournamentSubtitle, setTournamentSubtitle] = useState('OVERALL STANDINGS');
   const [tournamentMode, setTournamentMode] = useState('cs');
 
   // Calculator State
@@ -89,7 +90,8 @@ function App() {
   const startNewTournament = (mode = 'cs') => {
     setCurrentTournamentId(Date.now().toString());
     setTournamentMode(mode);
-    setTournamentName('Match Day ' + new Date().toLocaleDateString());
+    setTournamentName('BOSS ESPORTS TOURNAMENT');
+    setTournamentSubtitle('Match Day ' + new Date().toLocaleDateString());
     setExtractedData([]);
     setImage(null);
     setBgImage(null);
@@ -99,7 +101,8 @@ function App() {
 
   const loadTournament = (t) => {
     setCurrentTournamentId(t.id);
-    setTournamentName(t.name);
+    setTournamentName(t.name || 'BOSS ESPORTS TOURNAMENT');
+    setTournamentSubtitle(t.subtitle || 'OVERALL STANDINGS');
     setTournamentMode(t.mode || 'cs');
     setExtractedData(t.teamsData || []);
     setWinPointValue(t.winPointValue || DEFAULT_WIN_POINT_VALUE);
@@ -121,6 +124,7 @@ function App() {
     const result = await saveTournament({
       id: currentTournamentId,
       name: tournamentName,
+      subtitle: tournamentSubtitle,
       mode: tournamentMode,
       teamsData: extractedData,
       winPointValue,
@@ -590,14 +594,24 @@ function App() {
   const renderEditStep = () => (
     <div className="panel">
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem'}}>
-        <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap'}}>
           <button className="btn btn-secondary" onClick={() => setStep('dashboard')}><ArrowLeft size={16} /> Dashboard</button>
-          <input 
-            type="text" 
-            value={tournamentName}
-            onChange={e => setTournamentName(e.target.value)}
-            style={{background: 'transparent', border: 'none', borderBottom: '1px solid var(--color-gold)', color: 'var(--color-gold)', fontSize: '1.5rem', fontFamily: 'var(--font-heading)'}}
-          />
+          <div style={{display: 'flex', flexDirection: 'column', gap: '4px'}}>
+            <input 
+              type="text" 
+              value={tournamentName}
+              onChange={e => setTournamentName(e.target.value)}
+              placeholder="Tournament Name"
+              style={{background: 'transparent', border: 'none', borderBottom: '1px solid var(--color-gold)', color: 'var(--color-gold)', fontSize: '1.5rem', fontFamily: 'var(--font-heading)'}}
+            />
+            <input 
+              type="text" 
+              value={tournamentSubtitle}
+              onChange={e => setTournamentSubtitle(e.target.value)}
+              placeholder="Subtitle (e.g. Match Day 1)"
+              style={{background: 'transparent', border: 'none', borderBottom: '1px solid var(--color-gold-light)', color: 'var(--color-white)', fontSize: '1rem', fontFamily: 'var(--font-main)'}}
+            />
+          </div>
         </div>
         <div style={{display: 'flex', gap: '1rem'}}>
           <button className="btn btn-secondary" onClick={() => setShowSettings(!showSettings)}>
@@ -905,9 +919,9 @@ function App() {
             />
             
             <div className="scoreboard-content" style={{ position: 'relative', zIndex: 1 }}>
-              <h1 className="scoreboard-main-title">BOSS ESPORTS TOURNAMENT</h1>
+              <h1 className="scoreboard-main-title">{tournamentName.toUpperCase()}</h1>
               <div className="scoreboard-title-box">
-                <h3>OVERALL STANDINGS</h3>
+                <h3>{tournamentSubtitle.toUpperCase()}</h3>
               </div>
               
               <div className="scoreboard-table-container">

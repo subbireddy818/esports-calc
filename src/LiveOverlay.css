@@ -7,12 +7,7 @@ body {
   width: 500px;
   font-family: 'Rajdhani', sans-serif;
   color: white;
-  text-shadow: 
-    1px 1px 0 #000,
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    0 4px 6px rgba(0,0,0,0.8);
+  text-shadow: 1px 1px 3px rgba(0,0,0,1);
   padding: 20px;
 }
 
@@ -27,12 +22,12 @@ body {
   -webkit-text-stroke: 1px #E53935;
 }
 
-.live-header h2 { font-size: 20px; margin: 0; font-weight: 700; }
+.live-header h2 { font-size: 20px; margin: 0; font-weight: 700; color: white; }
 
 .live-table {
   width: 100%;
   border-collapse: collapse;
-  background: transparent;
+  background: rgba(40, 40, 40, 0.7);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -56,7 +51,7 @@ body {
 }
 
 .live-table .left-align { text-align: left; }
-.live-table .team-name { color: #FFC107; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
+.live-table .team-name { color: white; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
 .live-table .highlight-pts { color: #00E676; font-size: 20px; font-weight: 900; }
 
 .team-name-wrapper {
@@ -67,7 +62,7 @@ body {
 }
 
 .team-trophy {
-  filter: grayscale(100%) brightness(500%) drop-shadow(1px 1px 0px #000) drop-shadow(-1px -1px 0px #000) drop-shadow(1px -1px 0px #000) drop-shadow(-1px 1px 0px #000);
+  filter: grayscale(100%) brightness(500%) drop-shadow(1px 1px 0px rgba(0,0,0,0.8));
 }
 
 .team-name-text {

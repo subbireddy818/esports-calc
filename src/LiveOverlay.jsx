@@ -7,6 +7,7 @@ export default function LiveOverlay() {
   const [standings, setStandings] = useState([]);
   const [mode, setMode] = useState('cs');
   const [tournamentName, setTournamentName] = useState('LIVE STANDINGS');
+  const [tournamentSubtitle, setTournamentSubtitle] = useState('OVERALL STANDINGS');
 
   const [championRushEnabled, setChampionRushEnabled] = useState(true);
   const [championRushThreshold, setChampionRushThreshold] = useState(60);
@@ -26,9 +27,11 @@ export default function LiveOverlay() {
         let brConfigText = DEFAULT_BR_POINTS.join(',');
         let cRushEnabled = true;
         let cRushThreshold = 60;
+        let subtitle = 'OVERALL STANDINGS';
         
         if (teamsData && !Array.isArray(teamsData) && teamsData._wrapper) {
           tMode = teamsData.mode;
+          if (teamsData.subtitle) subtitle = teamsData.subtitle;
           if (teamsData.brPointsConfigText) brConfigText = teamsData.brPointsConfigText;
           if (teamsData.championRushEnabled !== undefined) cRushEnabled = teamsData.championRushEnabled;
           if (teamsData.championRushThreshold !== undefined) cRushThreshold = teamsData.championRushThreshold;
@@ -37,7 +40,8 @@ export default function LiveOverlay() {
           tMode = data.mode;
         }
         setMode(tMode);
-        setTournamentName(data.name);
+        setTournamentName(data.name || 'BOSS ESPORTS TOURNAMENT');
+        setTournamentSubtitle(subtitle);
         setChampionRushEnabled(cRushEnabled);
         setChampionRushThreshold(cRushThreshold);
         
@@ -57,7 +61,7 @@ export default function LiveOverlay() {
     <div className="live-overlay-container">
       <div className="live-header">
         <h1>{tournamentName}</h1>
-        <h2>LIVE STANDINGS</h2>
+        <h2>{tournamentSubtitle}</h2>
       </div>
       <table className="live-table">
         <thead>
