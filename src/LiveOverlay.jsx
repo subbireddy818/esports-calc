@@ -66,7 +66,7 @@ export default function LiveOverlay() {
     <div className="live-overlay-container">
       <div className="live-header">
         <h1>{tournamentName}</h1>
-        <h2>{matchDay} {matchDate ? `• ${matchDate}` : ''}</h2>
+        <h2>{matchDay}</h2>
       </div>
       <table className="live-table">
         <thead>
