@@ -16,6 +16,8 @@ export const calculateStandings = (results, mode, winPointValue, killPointValue,
           const pts = rank <= brPointsConfig.length ? brPointsConfig[rank - 1] : 0;
           return sum + pts;
         }, 0);
+      } else if (typeof ranks === 'string' && ranks.trim() === '') {
+        computedPlacementPoints = 0;
       }
       matchPoints = computedPlacementPoints;
       totalPoints = matchPoints + killPoints;
