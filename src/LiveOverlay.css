@@ -36,8 +36,8 @@ body {
   background: rgba(229, 57, 53, 0.8);
   padding: 8px;
   font-family: 'Anton', sans-serif;
-  font-size: 20px;
-  color: #FFC107;
+  font-size: 24px;
+  color: white;
   text-align: center;
   letter-spacing: 0.5px;
 }
@@ -46,13 +46,13 @@ body {
   padding: 8px;
   text-align: center;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 24px;
   border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .live-table .left-align { text-align: left; }
-.live-table .team-name { color: white; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
-.live-table .highlight-pts { color: #00E676; font-size: 20px; font-weight: 900; }
+.live-table .team-name { color: white; font-size: 24px; font-weight: 900; letter-spacing: 0.5px; }
+.live-table .highlight-pts { color: #00E676; font-size: 24px; font-weight: 900; }
 
 .team-name-wrapper {
   display: flex;
