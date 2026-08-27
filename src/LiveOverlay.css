@@ -27,12 +27,12 @@ body {
 .live-header h2 { font-family: 'Montserrat', sans-serif; font-size: 20px; margin: 0; font-weight: 700; color: white; }
 
 .slash-separator {
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 900;
-  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 300;
+  font-size: 22px;
   font-style: italic;
-  letter-spacing: -2px;
   padding: 0 4px !important;
+  text-shadow: none;
 }
 
 .live-table {
